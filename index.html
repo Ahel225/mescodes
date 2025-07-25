@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionnaire de Budget Familial Avancé</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Styles CSS pour une meilleure présentation */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #e9f5f9; /* Doux bleu clair */
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px; /* Plus large pour les graphiques */
+            margin: 30px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            border: 1px solid #dcdcdc;
+        }
+        h1 {
+            color: #007bff; /* Bleu primaire */
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 600;
+        }
+        h2 {
+            color: #0056b3; /* Bleu plus foncé */
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 8px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+        .form-group label {
+            flex: 0 0 120px; /* Largeur fixe pour les labels */
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group input[type="number"],
+        .form-group input[type="text"],
+        .form-group select {
+            flex: 1; /* Prend l'espace restant */
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1em;
+            min-width: 150px; /* Empêche les champs de devenir trop petits */
+        }
+        .form-group button {
+            background-color: #28a745; /* Vert pour ajouter */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.05em;
+            transition: background-color 0.2s ease;
+            margin-left: auto; /* Aligne le bouton à droite si espace */
+        }
+        .form-group button:hover {
+            background-color: #218838;
+        }
+        /* Styles spécifiques pour les boutons d'export/import */
+        #exportData, #importDataBtn {
+            background-color: #6c757d; /* Gris */
+            margin-left: 0;
+        }
+        #exportData:hover, #importDataBtn:hover {
+            background-color: #5a6268;
+        }
+        #importFileInput {
+            display: none; /* Cache l'input de fichier par défaut */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background-color: white;
+        }
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        table th {
+            background-color: #f2f2f2;
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+        table tbody tr:hover {
+            background-color: #f8f8f8;
+        }
+        .delete-btn, .edit-btn {
+            background-color: #dc3545; /* Rouge pour supprimer */
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-right: 5px;
+            transition: background-color 0.2s ease;
+        }
+        .edit-btn {
+            background-color: #ffc107; /* Jaune pour modifier */
+            color: #333;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        .edit-btn:hover {
+            background-color: #e0a800;
+        }
+        table tfoot td {
+            font-weight: bold;
+            background-color: #e6f7ff; /* Bleu très clair pour les totaux */
+            border-top: 2px solid #cceeff;
+        }
+        .summary p {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+        .summary span {
+            color: #007bff; /* Couleur pour les valeurs du résumé */
+            font-size: 1.1em;
+        }
+        .summary p:last-child {
+            font-size: 1.4em;
+            color: #28a745; /* Vert pour le solde */
+        }
+        .summary p:last-child span {
+            color: #28a745;
+        }
+        #revenuMensuel {
+            background-color: #e6ffe6; /* Vert clair pour le revenu */
+            font-weight: bold;
+            text-align: right;
+        }
+        .month-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            background-color: #e0f2f7;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .month-selector button {
+            background-color: #007bff;
+            padding: 10px 18px;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+        .month-selector button:hover {
+            background-color: #0056b3;
+        }
+        .month-selector span {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #0056b3;
+        }
+        .chart-container {
+            width: 100%;
+            max-width: 600px; /* Limite la largeur du graphique */
+            margin: 20px auto;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .file-upload-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        .file-upload-group label {
+            background-color: #007bff; /* Bleu */
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .file-upload-group label:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gestionnaire de Budget Familial Avancé</h1>
+
+        <div class="month-selector">
+            <button id="prevMonth">Mois Précédent</button>
+            <span id="currentMonthDisplay"></span>
+            <button id="nextMonth">Mois Suivant</button>
+        </div>
+
+        <div class="section">
+            <h2>Revenus</h2>
+            <div class="form-group">
+                <label for="revenuMensuel">Revenu Mensuel Net (FCFA) :</label>
+                <input type="number" id="revenuMensuel" value="0" min="0">
+                <button id="saveRevenu">Enregistrer Revenu</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Dépenses Fixes</h2>
+            <form id="formDepensesFixes">
+                <div class="form-group">
+                    <label for="nomDepenseFixe">Nom de la dépense :</label>
+                    <input type="text" id="nomDepenseFixe" placeholder="Ex: Loyer" required>
+                </div>
+                <div class="form-group">
+                    <label for="montantDepenseFixe">Montant (FCFA) :</label>
+                    <input type="number" id="montantDepenseFixe" placeholder="Ex: 160000" min="0" required>
+                </div>
+                <button type="submit">Ajouter Dépense Fixe</button>
+            </form>
+            <h3>Liste des Dépenses Fixes :</h3>
+            <table id="listeDepensesFixes">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Montant (FCFA)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+                <tfoot>
+                    <tr>
+                        <td>**Total Dépenses Fixes**</td>
+                        <td id="totalDepensesFixes">0</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Dépenses Variables</h2>
+            <form id="formDepensesVariables">
+                <div class="form-group">
+                    <label for="nomDepenseVariable">Nom de la dépense :</label>
+                    <input type="text" id="nomDepenseVariable" placeholder="Ex: Alimentation" required>
+                </div>
+                 <div class="form-group">
+                    <label for="categorieDepenseVariable">Catégorie :</label>
+                    <select id="categorieDepenseVariable" required>
+                        <option value="">Sélectionner une catégorie</option>
+                        <option value="Alimentation">Alimentation</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Scolarité">Scolarité</option>
+                        <option value="Santé et Hygiène">Santé et Hygiène</option>
+                        <option value="Habillement et Entretien">Habillement et Entretien</option>
+                        <option value="Loisirs">Loisirs</option>
+                        <option value="Factures (Eau, Gaz)">Factures (Eau, Gaz)</option>
+                        <option value="Éducation">Éducation</option>
+                        <option value="Dons et Cadeaux">Dons et Cadeaux</option>
+                        <option value="Autres">Autres</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="montantDepenseVariable">Montant (FCFA) :</label>
+                    <input type="number" id="montantDepenseVariable" placeholder="Ex: 250000" min="0" required>
+                </div>
+                <button type="submit">Ajouter Dépense Variable</button>
+            </form>
+            <h3>Liste des Dépenses Variables :</h3>
+            <table id="listeDepensesVariables">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Catégorie</th>
+                        <th>Montant (FCFA)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+                <tfoot>
+                    <tr>
+                        <td>**Total Dépenses Variables**</td>
+                        <td colspan="2" id="totalDepensesVariables">0</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="section summary">
+            <h2>Résumé Mensuel</h2>
+            <p>Revenu Total : <span id="summaryRevenu">0</span> FCFA</p>
+            <p>Total Dépenses : <span id="summaryTotalDepenses">0</span> FCFA</p>
+            <p>Solde Restant : <span id="summarySolde">0</span> FCFA</p>
+        </div>
+
+        <div class="section">
+            <h2>Visualisation des Dépenses Variables par Catégorie</h2>
+            <div class="chart-container">
+                <canvas id="expensesChart"></canvas>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Sauvegarde & Restauration des Données</h2>
+            <div class="form-group">
+                <button id="exportData">Exporter les données (JSON)</button>
+                <div class="file-upload-group">
+                    <label for="importFileInput">Importer les données (JSON)</label>
+                    <input type="file" id="importFileInput" accept=".json">
+                    <button id="importDataBtn" style="display:none;">Confirmer l'importation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Variables globales pour stocker toutes les données de l'application ---
+        // 'budgetData' contiendra un objet où chaque clé est une année-mois (ex: '2025-07')
+        // et chaque valeur est un objet contenant le revenu, les dépenses fixes et variables pour ce mois.
+        let budgetData = {};
+        let currentMonthKey = ''; // Ex: '2025-07'
+        let currentMonthDate = new Date(); // Objet Date pour le mois actuel affiché
+
+        // --- Références aux éléments du DOM ---
+        const revenuInput = document.getElementById('revenuMensuel');
+const saveRevenuBtn = document.getElementById('saveRevenu');
+        const formDepensesFixes = document.getElementById('formDepensesFixes');
+        const formDepensesVariables = document.getElementById('formDepensesVariables');
+        const listeDepensesFixesBody = document.querySelector('#listeDepensesFixes tbody');
+        const listeDepensesVariablesBody = document.querySelector('#listeDepensesVariables tbody');
+        const totalDepensesFixesSpan = document.getElementById('totalDepensesFixes');
+        const totalDepensesVariablesSpan = document.getElementById('totalDepensesVariables');
+        const summaryRevenuSpan = document.getElementById('summaryRevenu');
+        const summaryTotalDepensesSpan = document.getElementById('summaryTotalDepenses');
+        const summarySoldeSpan = document.getElementById('summarySolde');
+
+        // Sélecteur de mois
+        const prevMonthBtn = document.getElementById('prevMonth');
+        const nextMonthBtn = document.getElementById('nextMonth');
+        const currentMonthDisplay = document.getElementById('currentMonthDisplay');
+
+        // Graphique
+        let expensesChartInstance; // Variable pour stocker l'instance du graphique Chart.js
+
+        // Export/Import
+        const exportDataBtn = document.getElementById('exportData');
+        const importFileInput = document.getElementById('importFileInput');
+        const importDataBtn = document.getElementById('importDataBtn');
+
+        // --- Fonctions utilitaires ---
+
+        /**
+         * Génère la clé de mois (AAAA-MM) à partir d'une date.
+         * @param {Date} date - L'objet Date.
+         * @returns {string} La clé du mois (ex: '2025-07').
+         */
+        function generateMonthKey(date) {
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            return `${year}-${month}`;
+        }
+
+        /**
+         * Met à jour l'affichage du mois actuel et charge les données du mois.
+         */
+        function updateMonthDisplayAndLoadData() {
+            currentMonthKey = generateMonthKey(currentMonthDate);
+            const options = { year: 'numeric', month: 'long' };
+            currentMonthDisplay.textContent = currentMonthDate.toLocaleDateString('fr-FR', options);
+
+            // Initialiser les données pour le mois si elles n'existent pas
+            if (!budgetData[currentMonthKey]) {
+                budgetData[currentMonthKey] = {
+                    revenu: 0,
+                    depensesFixes: [],
+                    depensesVariables: []
+                };
+            }
+
+            // Mettre à jour les inputs et listes avec les données du mois courant
+            revenuInput.value = budgetData[currentMonthKey].revenu;
+            rendreDepenses(budgetData[currentMonthKey].depensesFixes, listeDepensesFixesBody, false); // false pour ne pas inclure la catégorie pour les fixes
+            rendreDepenses(budgetData[currentMonthKey].depensesVariables, listeDepensesVariablesBody, true); // true pour inclure la catégorie pour les variables
+
+            calculerEtAfficherTotaux();
+            updateChart(); // Mettre à jour le graphique
+        }
+
+        /**
+         * Calcule et affiche les totaux et le solde pour le mois courant.
+         */
+        function calculerEtAfficherTotaux() {
+            const currentMonthData = budgetData[currentMonthKey];
+            if (!currentMonthData) return; // Ne rien faire si aucune donnée pour le mois
+
+            const totalFixes = currentMonthData.depensesFixes.reduce((sum, dep) => sum + dep.montant, 0);
+            const totalVariables = currentMonthData.depensesVariables.reduce((sum, dep) => sum + dep.montant, 0);
+            const totalGeneral = totalFixes + totalVariables;
+            const solde = currentMonthData.revenu - totalGeneral;
+
+            totalDepensesFixesSpan.textContent = totalFixes.toLocaleString('fr-FR');
+            totalDepensesVariablesSpan.textContent = totalVariables.toLocaleString('fr-FR');
+            summaryRevenuSpan.textContent = currentMonthData.revenu.toLocaleString('fr-FR');
+            summaryTotalDepensesSpan.textContent = totalGeneral.toLocaleString('fr-FR');
+            summarySoldeSpan.textContent = solde.toLocaleString('fr-FR');
+
+            // Mettre à jour la couleur du solde
+            if (solde < 0) {
+                summarySoldeSpan.style.color = '#dc3545'; // Rouge
+            } else {
+                summarySoldeSpan.style.color = '#28a745'; // Vert
+            }
+        }
+
+        /**
+         * Enregistre toutes les données de budget dans le localStorage.
+         */
+        function sauvegarderDonnees() {
+            localStorage.setItem('budgetData', JSON.stringify(budgetData));
+            localStorage.setItem('currentMonthDate', currentMonthDate.toISOString()); // Sauvegarde la date affichée
+        }
+
+        /**
+         * Charge les données de budget depuis le localStorage au démarrage.
+         */
+        function chargerDonnees() {
+            const storedData = localStorage.getItem('budgetData');
+            if (storedData) {
+                budgetData = JSON.parse(storedData);
+            } else {
+                // Initialiser avec des données par défaut pour le mois en cours si rien n'est trouvé
+                const today = new Date();
+                const defaultMonthKey = generateMonthKey(today);
+                budgetData[defaultMonthKey] = {
+                    revenu: 700000, // Revenu par défaut
+                    depensesFixes: [
+                        { id: Date.now(), nom: "Loyer", montant: 160000 },
+                        { id: Date.now() + 1, nom: "Électricité", montant: 15000 },
+                        { id: Date.now() + 2, nom: "Internet", montant: 20000 }
+                    ],
+                    depensesVariables: [
+                        { id: Date.now() + 3, nom: "Alimentation", categorie: "Alimentation", montant: 250000 },
+                        { id: Date.now() + 4, nom: "Transport", categorie: "Transport", montant: 40000 }
+                    ]
+                };
+            }
+
+            const storedMonthDate = localStorage.getItem('currentMonthDate');
+            if (storedMonthDate) {
+                currentMonthDate = new Date(storedMonthDate);
+            } else {
+                currentMonthDate = new Date(); // Par défaut, le mois actuel
+            }
+        }
+
+        /**
+         * Crée une ligne de tableau pour une dépense donnée.
+         * @param {Object} depense - L'objet dépense {id, nom, montant, (categorie)}
+         * @param {Array} listeDepensesRef - La référence à la liste (fixes ou variables) dans budgetData[currentMonthKey]
+         * @param {HTMLElement} tableBody - Le <tbody> du tableau
+         * @param {boolean} hasCategory - Indique si la dépense a une catégorie (pour les variables)
+         */
+        function creerLigneDepense(depense, listeDepensesRef, tableBody, hasCategory) {
+            const row = tableBody.insertRow();
+            row.setAttribute('data-id', depense.id);
+
+            const cellNom = row.insertCell(0);
+            const cellCategorie = hasCategory ? row.insertCell(1) : null;
+            const cellMontant = hasCategory ? row.insertCell(2) : row.insertCell(1);
+            const cellActions = hasCategory ? row.insertCell(3) : row.insertCell(2);
+
+            cellNom.textContent = depense.nom;
+            if (hasCategory && cellCategorie) {
+                cellCategorie.textContent = depense.categorie || 'Non catégorisé';
+            }
+cellMontant.textContent = depense.montant.toLocaleString('fr-FR');
+
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Modifier';
+            editButton.className = 'edit-btn';
+            editButton.onclick = () => modifierDepense(depense.id, listeDepensesRef, tableBody, hasCategory);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Supprimer';
+            deleteButton.className = 'delete-btn';
+            deleteButton.onclick = () => supprimerDepense(depense.id, listeDepensesRef, tableBody);
+
+            cellActions.appendChild(editButton);
+            cellActions.appendChild(deleteButton);
+        }
+
+        /**
+         * Rend toutes les dépenses d'une liste donnée.
+         * @param {Array} listeDepenses - La liste (fixes ou variables) à rendre
+         * @param {HTMLElement} tableBody - Le <tbody> du tableau
+         * @param {boolean} hasCategory - Indique si la dépense a une catégorie
+         */
+        function rendreDepenses(listeDepenses, tableBody, hasCategory) {
+            tableBody.innerHTML = ''; // Nettoie le tableau avant de le remplir
+            listeDepenses.forEach(dep => creerLigneDepense(dep, listeDepenses, tableBody, hasCategory));
+            calculerEtAfficherTotaux();
+        }
+
+        /**
+         * Gère l'ajout d'une dépense.
+         * @param {Event} e - L'événement de soumission du formulaire
+         * @param {string} typeDepense - 'depensesFixes' ou 'depensesVariables'
+         * @param {HTMLInputElement} nomInput - L'input du nom
+         * @param {HTMLSelectElement} [categorieSelect] - L'input de la catégorie (pour les variables)
+         * @param {HTMLInputElement} montantInput - L'input du montant
+         */
+        function ajouterDepense(e, typeDepense, nomInput, categorieSelect, montantInput) {
+            e.preventDefault();
+
+            const nom = nomInput.value.trim();
+            const montant = parseFloat(montantInput.value);
+            const categorie = categorieSelect ? categorieSelect.value : null;
+
+            if (nom && !isNaN(montant) && montant >= 0 && (typeDepense === 'depensesFixes' || (typeDepense === 'depensesVariables' && categorie))) {
+                const nouvelleDepense = {
+                    id: Date.now(),
+                    nom: nom,
+                    montant: montant
+                };
+                if (categorie) {
+                    nouvelleDepense.categorie = categorie;
+                }
+
+                budgetData[currentMonthKey][typeDepense].push(nouvelleDepense);
+                sauvegarderDonnees();
+                updateMonthDisplayAndLoadData(); // Recharger le mois pour rafraîchir tout
+                nomInput.value = '';
+                if (categorieSelect) categorieSelect.value = '';
+                montantInput.value = '';
+            } else {
+                alert('Veuillez remplir tous les champs et entrer un montant valide (nombre positif). Pour les dépenses variables, sélectionnez une catégorie.');
+            }
+        }
+
+        /**
+         * Gère la suppression d'une dépense.
+         * @param {number} id - L'ID de la dépense à supprimer
+         * @param {Array} listeDepensesRef - La référence à la liste dans budgetData[currentMonthKey]
+         * @param {HTMLElement} tableBody - Le <tbody> du tableau
+         */
+        function supprimerDepense(id, listeDepensesRef, tableBody) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette dépense ?')) {
+                const index = listeDepensesRef.findIndex(dep => dep.id === id);
+                if (index > -1) {
+                    listeDepensesRef.splice(index, 1);
+                    sauvegarderDonnees();
+                    updateMonthDisplayAndLoadData(); // Recharger le mois pour rafraîchir tout
+                }
+            }
+        }
+
+        /**
+         * Gère la modification d'une dépense.
+         * @param {number} id - L'ID de la dépense à modifier
+         * @param {Array} listeDepensesRef - La référence à la liste dans budgetData[currentMonthKey]
+         * @param {HTMLElement} tableBody - Le <tbody> du tableau
+         * @param {boolean} hasCategory - Indique si la dépense a une catégorie
+         */
+        function modifierDepense(id, listeDepensesRef, tableBody, hasCategory) {
+            const depense = listeDepensesRef.find(dep => dep.id === id);
+            if (depense) {
+                const nouveauNom = prompt('Modifier le nom de la dépense:', depense.nom);
+                if (nouveauNom === null || nouveauNom.trim() === '') return;
+
+                let nouvelleCategorie = depense.categorie;
+                if (hasCategory) {
+                    nouvelleCategorie = prompt('Modifier la catégorie (ex: Alimentation, Transport...):', depense.categorie || '');
+                    if (nouvelleCategorie === null || nouvelleCategorie.trim() === '') return;
+                }
+
+                const nouveauMontant = prompt('Modifier le montant de la dépense (FCFA):', depense.montant);
+                const montantValide = parseFloat(nouveauMontant);
+
+                if (!isNaN(montantValide) && montantValide >= 0) {
+                    depense.nom = nouveauNom.trim();
+                    if (hasCategory) depense.categorie = nouvelleCategorie.trim();
+                    depense.montant = montantValide;
+                    sauvegarderDonnees();
+                    updateMonthDisplayAndLoadData(); // Recharger le mois pour rafraîchir tout
+                } else {
+                    alert('Montant invalide. La dépense n\'a pas été modifiée.');
+                }
+            }
+        }
+
+        // --- Fonctions de gestion du graphique Chart.js ---
+        function updateChart() {
+            const ctx = document.getElementById('expensesChart').getContext('2d');
+            const expensesByCategory = {};
+            const currentMonthData = budgetData[currentMonthKey];
+
+            if (currentMonthData && currentMonthData.depensesVariables) {
+                currentMonthData.depensesVariables.forEach(dep => {
+                    const category = dep.categorie || 'Non catégorisé';
+                    expensesByCategory[category] = (expensesByCategory[category] || 0) + dep.montant;
+                });
+            }
+
+            const labels = Object.keys(expensesByCategory);
+            const data = Object.values(expensesByCategory);
+
+            const backgroundColors = [
+                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#E7E9ED',
+                '#80C780', '#D39CFF', '#F9C7BD', '#A8DADC', '#FFD166'
+            ];
+
+            if (expensesChartInstance) {
+                expensesChartInstance.destroy(); // Détruit l'ancienne instance du graphique
+            }
+
+            expensesChartInstance = new Chart(ctx, {
+                type: 'doughnut', // Graphique en forme d'anneau
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: backgroundColors.slice(0, labels.length), // Utilise autant de couleurs que de catégories
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Répartition des Dépenses Variables par Catégorie'
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- Fonctions d'export et d'import ---
+        function exportData() {
+            const dataStr = JSON.stringify(budgetData, null, 2); // Indentation pour la lisibilité
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `budget_familial_${generateMonthKey(currentMonthDate)}.json`; // Nom du fichier avec le mois actuel
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url); // Libère la mémoire
+            alert('Vos données ont été exportées avec succès !');
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                alert('Veuillez sélectionner un fichier JSON à importer.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (confirm('Voulez-vous remplacer vos données actuelles par les données importées ? Cette action est irréversible.')) {
+                        budgetData = importedData;
+                        sauvegarderDonnees();
+                        updateMonthDisplayAndLoadData();
+                        alert('Données importées avec succès !');
+                    }
+                } catch (error) {
+                    alert('Erreur lors de la lecture du fichier JSON. Veuillez vous assurer que le fichier est valide.');
+                    console.error('Erreur d\'importation:', error);
+                } finally {
+                    importFileInput.value = ''; // Réinitialise l'input file pour permettre la réimportation du même fichier
+                    importDataBtn.style.display = 'none'; // Cache le bouton de confirmation
+                }
+            };
+            reader.readAsText(file);
+        }
+
+
+        // --- Événements ---
+
+        // Au chargement de la page
+        document.addEventListener('DOMContentLoaded', () => {
+            chargerDonnees();
+            updateMonthDisplayAndLoadData(); // Initialise l'affichage et les données du mois courant
+        });
+
+        // Navigation entre les mois
+        prevMonthBtn.addEventListener('click', () => {
+            currentMonthDate.setMonth(currentMonthDate.getMonth() - 1);
+            updateMonthDisplayAndLoadData();
+            sauvegarderDonnees(); // Sauvegarde le changement de mois
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+            currentMonthDate.setMonth(currentMonthDate.getMonth() + 1);
+            updateMonthDisplayAndLoadData();
+            sauvegarderDonnees(); // Sauvegarde le changement de mois
+        });
+
+        // Bouton "Enregistrer Revenu"
+        saveRevenuBtn.addEventListener('click', () => {
+            const nouveauRevenu = parseFloat(revenuInput.value);
+            if (!isNaN(nouveauRevenu) && nouveauRevenu >= 0) {
+                budgetData[currentMonthKey].revenu = nouveauRevenu;
+                sauvegarderDonnees();
+                calculerEtAfficherTotaux();
+                alert('Revenu enregistré avec succès !');
+            } else {
+                alert('Veuillez entrer un revenu valide (nombre positif).');
+            }
+        });
+
+        // Soumission du formulaire des dépenses fixes
+        formDepensesFixes.addEventListener('submit', (e) => {
+            ajouterDepense(
+                e,
+                'depensesFixes',
+                document.getElementById('nomDepenseFixe'),
+                null, // Pas de catégorie pour les fixes
+                document.getElementById('montantDepenseFixe')
+            );
+        });
+
+        // Soumission du formulaire des dépenses variables
+        formDepensesVariables.addEventListener('submit', (e) => {
+            ajouterDepense(
+                e,
+                'depensesVariables',
+                document.getElementById('nomDepenseVariable'),
+                document.getElementById('categorieDepenseVariable'),
+                document.getElementById('montantDepenseVariable')
+            );
+        });
+
+        // Exportation des données
+        exportDataBtn.addEventListener('click', exportData);
+
+        // Gestion de l'input de fichier pour l'importation
+        importFileInput.addEventListener('change', () => {
+            if (importFileInput.files.length > 0) {
+                importDataBtn.style.display = 'inline-block'; // Affiche le bouton de confirmation
+            } else {
+                importDataBtn.style.display = 'none';
+            }
+        });
+
+        // Confirmation d'importation
+        importDataBtn.addEventListener('click', () => {
+            if (importFileInput.files.length > 0) {
+                importData({ target: importFileInput }); // Déclenche la fonction d'importation
+            } else {
+                alert('Aucun fichier sélectionné pour l\'importation.');
+            }
+        });
+
+    </script>
+</body>
+</html>
