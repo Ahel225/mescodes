@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code de l'Enfance - Loi relative à la minorité</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a8cff; /* Bleu enfantin */
+            --secondary-color: #e0f0ff; /* Bleu très clair */
+            --accent-color: #ff9e40; /* Orange vif */
+            --dark-color: #1a3c78; /* Bleu foncé */
+            --light-color: #f8fbff; /* Blanc bleuté */
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Source Serif Pro', serif;
+            background-color: var(--light-color);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 50L0 25L50 0L100 25L50 50Z' fill='%234a8cff22' /%3E%3C/svg%3E");
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(26, 60, 120, 0.1);
+            overflow: hidden;
+            border: 1px solid var(--secondary-color);
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #3a74d6);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid var(--dark-color);
+        }
+        
+        h1 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-style: italic;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            scroll-margin-top: 20px;
+        }
+        
+        h2 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.8rem;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        .articleX {
+            background: var(--light-color);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 3px 10px rgba(26, 60, 120, 0.08);
+            scroll-margin-top: 20px;
+        }
+        
+        .article-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.4rem;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .article-title::before {
+            content: "🧒";
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+        
+        .article-content {
+            color: #333;
+            line-height: 1.7;
+        }
+        
+        /* Bouton sommaire mobile */
+        .mobile-sommaire-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary-color), #3a74d6);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(26, 60, 120, 0.3);
+            z-index: 1001;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid white;
+        }
+        
+        .mobile-sommaire-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(26, 60, 120, 0.4);
+        }
+        
+        /* Sommaire plein écran pour mobile */
+        .mobile-sommaire {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(74, 140, 255, 0.95);
+            z-index: 1002;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .mobile-sommaire.active {
+            opacity: 1;
+        }
+        
+        .mobile-sommaire-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(26, 60, 120, 0.3);
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+            border: 2px solid var(--secondary-color);
+        }
+        
+        .mobile-sommaire.active .mobile-sommaire-content {
+            transform: translateY(0);
+        }
+        
+        .mobile-sommaire-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        .mobile-sommaire-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .mobile-sommaire-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .mobile-sommaire-close:hover {
+            color: var(--primary-color);
+            background-color: var(--secondary-color);
+        }
+        
+        .sommaire-list {
+            list-style: none;
+        }
+        
+        .sommaire-item {
+            margin-bottom: 12px;
+            padding: 15px;
+            border-radius: 8px;
+            transition: var(--transition);
+            background-color: var(--light-color);
+            border-left: 3px solid var(--accent-color);
+        }
+        
+        .sommaire-item:hover {
+            background-color: var(--secondary-color);
+            transform: translateX(5px);
+        }
+        
+        .sommaire-item a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            display: block;
+            transition: var(--transition);
+            font-family: 'Source Serif Pro', serif;
+        }
+        
+        .sommaire-item:hover a {
+            color: var(--primary-color);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--dark-color);
+            font-size: 0.9rem;
+            background: var(--secondary-color);
+            border-top: 1px solid rgba(26, 60, 120, 0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mobile-sommaire-btn {
+                display: flex;
+            }
+            
+            header {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .section, .article {
+                scroll-margin-top: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Code de l'Enfance</h1>
+            <p class="subtitle">Loi n° 2019-572 du 26 juin 2019 relative à la minorité</p>
+        </header>
+        
+        <div class="content">
+            <div class="section">
+                <div class="article">
+                    <h2 class="article-title" id="chapitre1">CHAPITRE 1 : Dispositions générales</h2>
+                    <div id="article1" class="articleX">
+                        <h3>Article 1</h3>
+                        <p>Est mineure, la personne qui n'a pas encore atteint l'âge de dix-huit ans accomplis.</p>
+                    </div>
+                    <div id="article2" class="articleX">
+                        <h3>Article 2</h3>
+                        <p>L'enfant, à tout âge, doit honneur et respect à ses père et mère et à ses autres ascendants. Jusqu'à sa majorité ou à son émancipation, il leur doit obéissance.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="article">
+                    <h2 class="article-title" id="chapitre2">CHAPITRE 2 : Autorité parentale</h2>
+                    <h3 id="section1-chapitre2">Section 1 : Généralités</h3>
+                    <div id="article3" class="articleX">
+                        <h3>Article 3</h3>
+                        <p>L'autorité parentale est l'ensemble des droits et obligations reconnus aux père et mère sur la personne et les biens de leur enfant mineur et ayant pour finalité l'intérêt de celui-ci.</p>
+                    </div>
+                    <div id="article4" class="articleX">
+                        <h3>Article 4</h3>
+                        <p>L'autorité parentale comporte à l'égard du mineur des droits et obligations notamment :</p>
+                        <ol>
+                            <li>assurer la garde, la direction, la surveillance, l'entretien, l'instruction et l'éducation de l'enfant ;</li>
+                            <li>faire prendre à l'égard de celui-ci toute mesure d'assistance éducative ;</li>
+                            <li>consentir à son adoption, à son émancipation dans les conditions fixées par la loi ;</li>
+                            <li>administrer ses biens et disposer des revenus desdits biens.</li>
+                        </ol>
+                        <p>L'autorité parentale comporte, en outre, le droit pour le survivant des père et mère de choisir un tuteur pour son enfant mineur, dans le cas où il viendrait à décéder.</p>
+                    </div>
+                    
+                    <h3 id="section2-chapitre2">Section 2 : Exercice de l'autorité parentale</h3>
+                    <div id="article5" class="articleX">
+                        <h3>Article 5</h3>
+                        <p>Durant le mariage, l'autorité parentale est exercée en commun par les père et mère, sauf décision judiciaire contraire.</p>
+                        <p>S'il s'élève un conflit relativement à l'exercice de l'autorité parentale, le juge statue en considérant l'intérêt de l'enfant. Il est saisi par l'époux le plus diligent.</p>
+                        <p>A l'égard des tiers de bonne foi, chacun des époux est réputé agir avec l'accord de l'autre et dans le seul intérêt de l'enfant, quand il accomplit seul un acte usuel de l'autorité parentale.</p>
+                    </div>
+                    <div id="article6" class="articleX">
+                        <h3>Article 6</h3>
+                        <p>Si les père et mère sont divorcés, séparés de corps ou en résidence séparée, l'autorité parentale est exercée par celui d'entre eux à qui le juge a confié la garde de l'enfant.</p>
+                        <p>Toutefois, le parent qui n'en a pas la garde conserve les droits de visite et de surveillance et le droit de consentir à l'adoption ou à l'émancipation de l'enfant mineur.</p>
+                    </div>
+                    <div id="article7" class="articleX">
+                        <h3>Article 7</h3>
+                        <p>Lorsque la garde a été confiée à un tiers, les autres attributs de l'autorité parentale continuent d'être exercés par les père et mère.</p>
+                        <p>Toutefois, le tiers investi de la garde de l'enfant accomplit les actes usuels relatifs à sa surveillance et à son éducation.</p>
+                    </div>
+                    <div id="article8" class="articleX">
+                        <h3>Article 8</h3>
+                        <p>Si celui des père et mère ayant été investi de la garde de l'enfant décède ou s'il se trouve dans l'un des cas prévus à l'article 11, l'autorité parentale est dévolue de plein droit à l'autre parent. Toutefois, dans l'intérêt exclusif de l'enfant, le juge peut décider, à la requête de tout intéressé, de confier sa garde à toute autre personne.</p>
+                    </div>
+                    <div id="article9" class="articleX">
+                        <h3>Article 9</h3>
+                        <p>L'autorité parentale sur les enfants nés hors mariage est exercée par celui des père et mère à l'égard duquel la filiation est établie.</p>
+                        <p>Lorsque la filiation est établie à l'égard de la mère et du père, l'autorité parentale est exercée par les deux parents.</p>
+                        <p>S'il s'élève un conflit entre les père et mère relativement à l'exercice de l'autorité parentale, le juge, saisi par le parent le plus diligent, statue en considérant l'intérêt de l'enfant.</p>
+                        <p>Les dispositions de l'article 5 alinéa 3 sont applicables aux père et mère.</p>
+                    </div>
+                    <div id="article10" class="articleX">
+                        <h3>Article 10</h3>
+                        <p>L'autorité parentale sur l'enfant mineur adopté s'exerce conformément aux règles applicables en matière d'adoption.</p>
+                    </div>
+                    <div id="article11" class="articleX">
+                        <h3>Article 11</h3>
+                        <p>Perd l'exercice de l'autorité parentale, celui qui est hors d'état de manifester sa volonté en raison de son incapacité ou de toute autre cause.</p>
+                        <p>Est provisoirement privé de l'exercice de l'autorité parentale, celui qui consent une délégation de ses droits selon les règles établies à la section 3 ci-après.</p>
+                    </div>
+                    <div id="article12" class="articleX">
+                        <h3>Article 12</h3>
+                        <p>Si l'un des père et mère décède ou se trouve dans l'un des cas énumérés par l'article précédent, l'exercice de l'autorité parentale est dévolu uniquement à l'autre.</p>
+                    </div>
+                    
+                    <h3 id="section3-chapitre2">Section 3 : Délégation de l'autorité parentale</h3>
+                    <h4 id="sous-section1-chapitre2">Sous-section 1 : Délégation volontaire</h4>
+                    <div id="article13" class="articleX">
+                        <h3>Article 13</h3>
+                        <p>Ceux qui exercent l'autorité parentale peuvent, dans l'intérêt du mineur, déléguer volontairement et temporairement à une personne physique jouissant de ses droits civils, les droits qu'ils détiennent et les obligations qui leur incombent relatifs, tant à la garde du mineur, qu'à son instruction, son éducation et sa surveillance.</p>
+                    </div>
+                    <div id="article14" class="articleX">
+                        <h3>Article 14</h3>
+                        <p>La délégation volontaire s'opère par déclaration conjointe des parties intéressées, reçues par le juge des tutelles. En cas de dissentiment entre les parents ayant tous deux les droits de l'autorité parentale, le juge des tutelles statue.</p>
+                        <p>La délégation volontaire prend fin à l'expiration du délai convenu, ou par déclaration reçue dans les conditions prévues à l'alinéa précédent.</p>
+                    </div>
+                    <div id="article15" class="articleX">
+                        <h3>Article 15</h3>
+                        <p>Le juge des tutelles, à la requête des parties intéressées agissant conjointement, peut, en outre, décider qu'il y a lieu, dans l'intérêt de l'enfant, de déléguer à la personne visée à l'article 13, tout ou partie des droits qui ne lui avaient pas été conférés.</p>
+                    </div>
+                    
+                    <h4 id="sous-section2-chapitre2">Sous-section 2 : Délégation ordonnée par voie de justice</h4>
+                    <div id="article16" class="articleX">
+                        <h3>Article 16</h3>
+                        <p>Lorsqu'une personne physique ou morale a recueilli un enfant mineur, sans l'intervention des père, mère ou tuteur, déclaration doit en être faite dans les soixante-douze heures au juge des tutelles de la résidence parents ou le tuteur de l'enfant.</p>
+                        <p>La non-déclaration est punie d'un emprisonnement d'un à trois mois et d'une amende de 100.000 francs à 500.000 francs, ou de l'une de ces deux peines seulement. S'il s'agit d'une personne morale, les poursuites sont engagées et la peine prononcée contre le représentant de cette personne, habilité à recevoir l'enfant.</p>
+                    </div>
+                    <div id="article17" class="articleX">
+                        <h3>Article 17</h3>
+                        <p>Si dans les trois mois à compter de la déclaration, les père, mère ou tuteur n'ont pas réclamé l'enfant, celui qui l'a recueilli peut demander au juge des tutelles que, dans l'intérêt de l'enfant, l'exercice de tout ou partie des droits de l'autorité parentale lui soit confié.</p>
+                        <p>Dans le cas où il ne confère au requérant qu'une partie des droits de l'autorité parentale, le juge des tutelles ordonne que les autres droits sont dévolus au service chargé de la protection judiciaire de l'enfance, sans préjudice des dispositions de l'article 60.</p>
+                    </div>
+                    <div id="article18" class="articleX">
+                        <h3>Article 18</h3>
+                        <p>Le droit de consentir à l'adoption du mineur ne peut être délégué.</p>
+                    </div>
+                    <div id="article19" class="articleX">
+                        <h3>Article 19</h3>
+                        <p>Dans les cas visés aux articles 13 à 17, les père, mère ou tuteur peuvent demander au juge des tutelles que le mineur leur soit rendu. S'il estime qu'il y a lieu, dans l'intérêt de l'enfant, de rejeter la demande, le juge peut accorder au demandeur un droit de visite dont il fixe les modalités.</p>
+                        <p>La décision du juge est susceptible d'appel.</p>
+                        <p>Une nouvelle demande ne peut être formulée qu'à l'expiration du délai d'un an à compter du jour où la décision de rejet est devenue irrévocable.</p>
+                    </div>
+                    <div id="article20" class="articleX">
+                        <h3>Article 20</h3>
+                        <p>Si la personne à laquelle l'enfant a été confié dans les conditions fixées aux articles précédents décède ou si l'intérêt de l'enfant l'exige, le juge des tutelles statue d'office ou sur requête de tout intéressé sur le sort du mineur.</p>
+                    </div>
+                    
+                    <h3 id="section4-chapitre2">Section 4 : Déchéance de l'autorité parentale et retrait partiel des droits qui s'y rattachent</h3>
+                    <h4 id="sous-section1-section4-chapitre2">Sous-section 1 : Conditions et effets de la déchéance et du retrait</h4>
+                    <div id="article21" class="articleX">
+                        <h3>Article 21</h3>
+                        <p>Les père et mère sont déchus de plein droit, à l'égard de tous leurs enfants, de l'autorité parentale, ensemble de tous les droits qui s'y rattachent, par décision du juge des tutelles, d'office, à la demande du ministère public ou de toute partie intéressée, dans les cas ci-après :</p>
+                        <ol>
+                            <li>s'ils sont condamnés pour proxénétisme et si la ou les victimes sont leurs enfants ou des enfants à l'égard de qui ils sont investis de l'autorité parentale ;</li>
+                            <li>s'ils sont condamnés comme auteurs ou complices d'un crime ou délit commis sur la personne de leur enfant ou d'un enfant à l'égard duquel ils sont investis de l'autorité parentale ;</li>
+                            <li>s'ils sont condamnés comme complices d'un crime ou délit commis par un ou plusieurs de leurs enfants ou d'un enfant à l'égard duquel ils sont investis de l'autorité parentale.</li>
+                        </ol>
+                        <p>Toutefois, l'obligation de subvenir à l'entretien et à l'éducation de l'enfant reste à la charge du parent déchu.</p>
+                    </div>
+                    <div id="article22" class="articleX">
+                        <h3>Article 22</h3>
+                        <p>Peuvent être déchues de l'autorité parentale, l'ensemble de tous les droits qui s'y rattachent, ou peuvent être seulement privées de partie de ces droits à l'égard de l'un ou quelques-uns de leurs enfants, en dehors de toute condamnation pénale, les personnes exerçant l'autorité parentale qui mettent en danger le plein épanouissement, la sécurité, la santé ou la moralité de l'enfant, notamment :</p>
+                        <ol>
+                            <li>par de mauvais traitements ;</li>
+                            <li>par une consommation habituelle et excessive de boisson alcooliques, de stupéfiants ou de toutes autres substances nocives ;</li>
+                            <li>par des exemples pernicieux d'ivrognerie habituelle, d'inconduite notoire ou de délinquance ;</li>
+                            <li>par un défaut de soins ou un manque de direction ;</li>
+                            <li>par un désintérêt de plus d'un an, sans justes motifs.</li>
+                        </ol>
+                    </div>
+                    <div id="article23" class="articleX">
+                        <h3>Article 23</h3>
+                        <p>Sous réserve d'une décision judiciaire contraire, la déchéance ou le retrait partiel des droits de l'autorité parentale ne dispense pas le ou les enfants des obligations alimentaires auxquelles ils sont astreints, par la loi, à l'égard de leur père et mère dans le besoin.</p>
+                    </div>
+                    <div id="article24" class="articleX">
+                        <h3>Article 24</h3>
+                        <p>Les père et mère à l'encontre desquels a été prononcée une décision de déchéance de l'autorité parentale dans les cas prévus à l'article 21, ne peuvent obtenir restitution de leurs droits qu'après leur réhabilitation.</p>
+                    </div>
+                    <div id="article25" class="articleX">
+                        <h3>Article 25</h3>
+                        <p>Dans les cas prévus à l'article 22, ils peuvent demander que l'exercice de l'autorité parentale ou des droits retirés leur soit restitué.</p>
+                        <p>L'action ne peut être introduite avant l'expiration d'un délai d'un an à compter du jour où la décision de déchéance ou de retrait est devenue irrévocable.</p>
+                        <p>La demande en restitution de l'exercice de l'autorité parentale ou des droits retirés, qui a été rejetée en tout ou en partie, ne peut être réintroduite avant l'expiration du délai d'un an à compter du jour où la décision de rejet est devenue irrévocable.</p>
+                    </div>
+                    <div id="article26" class="articleX">
+                        <h3>Article 26</h3>
+                        <p>Lorsqu'une demande de restitution de l'exercice de l'autorité parentale ou des droits retirés n'a pas été présentée dans le délai de trois ans qui suit le jour à partir duquel la demande aurait pu être faite, les père et mère ne peuvent plus obtenir cette restitution, sauf pour eux à justifier d'un empêchement résultant d'un cas de force majeure.</p>
+                        <p>Le délai visé à l'alinéa précédent ne s'applique pas au cas où la tutelle a été déférée à l'Etat.</p>
+                    </div>
+                    
+                    <h3 id="section5-chapitre2">Section 5 : Mesures de protection ou d'assistance éducative</h3>
+                    <div id="article27" class="articleX">
+                        <h3>Article 27</h3>
+                        <p>Les mineurs peuvent faire l'objet de mesures de protection lorsque leur santé, leur moralité ou leur éducation sont compromises ou insuffisamment sauvegardées en raison de l'immoralité ou de l'incapacité des père et mère ou de la personne investie du droit de garde.</p>
+                        <p>Ils peuvent taire l'objet d'assistance éducative lorsqu'ils donnent à leurs parents ou à la personne investie du droit de garde des sujets de mécontentement très graves, par leur inconduite ou leur indiscipline.</p>
+                        <p>Ces mesures sont prises à la requête soit des père et mère ou l'un d'eux, soit du tuteur ou du ministère public.</p>
+                    </div>
+                    <div id="article28" class="articleX">
+                        <h3>Article 28</h3>
+                        <p>Chaque fois qu'il est possible, le mineur doit être maintenu dans son milieu habituel de vie. Dans ce cas, le juge des tutelles désigne une personne qualifiée ou un service d'assistance sociale ou d'éducation ou un service de protection judiciaire de l'enfance pour apporter aide et conseil à la famille, afin de suivre le développement de l'enfant et de lui en faire périodiquement rapport.</p>
+                        <p>Le juge peut également subordonner le maintien de l'enfant dans son milieu à des obligations particulières telles que celles de fréquenter régulièrement un établissement sanitaire ou d'éducation ou un service de protection judiciaire de l'enfance ou d'exercer une activité professionnelle.</p>
+                    </div>
+                    <div id="article29" class="articleX">
+                        <h3>Article 29</h3>
+                        <p>S'il est nécessaire de retirer l'enfant de son milieu de vie actuel, le juge des tutelles peut décider de confier tout ou partie des droits de l'autorité parentale :</p>
+                        <ol>
+                            <li>à celui des père et mère qui n'a pas l'exercice du droit de garde ;</li>
+                            <li>à un autre membre de la famille ou à un tiers digne de confiance ;</li>
+                            <li>à un établissement public d'assistance sociale ou d'éducation, à un établissement public relevant du service d'aide à l'enfance ou un établissement de protection judiciaire de l'enfance ou un établissement privé habilité.</p>
+                        </ol>
+                    </div>
+                    <div id="article30" class="articleX">
+                        <h3>Article 30</h3>
+                        <p>Le juge des tutelles peut, à tout moment, soit d'office, soit à la requête des père et mère ou de l'un d'eux, de la personne ou du service à qui l'enfant a été confié, du tuteur, du mineur lui-même ou du ministère public, modifier ou rapporter les décisions prises en matière de protection ou d'assistance éducative.</p>
+                    </div>
+                    <div id="article31" class="articleX">
+                        <h3>Article 31</h3>
+                        <p>Les frais d'entretien, d'instruction, d'éducation, de rééducation et de réinsertion du mineur qui a fait l'objet d'une ou de plusieurs mesures d'assistance éducative incombent aux père et mère.</p>
+                        <p>Toutefois, lorsque les père et mère ne peuvent supporter la charge totale de ces frais, la décision fixe le montant de leur participation ou déclare qu'en raison de leur indigence, il ne leur sera imposé aucune part contributive.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="article">
+                    <h2 class="article-title" id="chapitre3">CHAPITRE 3 : Incapacité du mineur</h2>
+                    <div id="article32" class="articleX">
+                        <h3>Article 32</h3>
+                        <p>Le mineur est incapable d'accomplir seul les actes de la vie civile.</p>
+                    </div>
+                    <div id="article33" class="articleX">
+                        <h3>Article 33</h3>
+                        <p>Le mineur a nécessairement un représentant pour tous les actes de la vie civile. Celui-ci est soit un administrateur légal, soit un tuteur.</p>
+                        <p>Toutefois, les actes qui intéressent personnellement le mineur âgé de plus de seize ans, notamment ceux qui concernent son état ou qui engagent sa personne physique, ne peuvent être conclus qu'avec son consentement. Le mineur ne peut agir ou défendre en personne, qu'assisté de son représentant légal dans toutes les instances ayant le même objet.</p>
+                    </div>
+                    <div id="article34" class="articleX">
+                        <h3>Article 34</h3>
+                        <p>Par dérogation aux dispositions prévues aux articles 32 et 33 et dans les autres cas prévus par la loi, le mineur peut accomplir, seul, tous les actes conservatoires sur son patrimoine.</p>
+                    </div>
+                    <div id="article35" class="articleX">
+                        <h3>Article 35</h3>
+                        <p>A partir de l'âge de seize ans, le mineur conclut et rompt son contrat de travail avec l'assistance de son représentant légal.</p>
+                    </div>
+                    <div id="article36" class="articleX">
+                        <h3>Article 36</h3>
+                        <p>Le mineur engage son patrimoine par ses délits, ses quasi-délits, et son enrichissement sans cause.</p>
+                    </div>
+                    <div id="article37" class="articleX">
+                        <h3>Article 37</h3>
+                        <p>L'acte accompli par le mineur est valable, si cet acte est de ceux que son représentant légal aurait pu faire seul.</p>
+                        <p>Toutefois, l'acte est rescindable en faveur du mineur, pour cause de lésion, quelle que soit son importance, sauf si cette lésion résulte d'un événement imprévu.</p>
+                        <p>Si cet acte est de ceux que le représentant légal n'aurait pu faire qu'avec une autorisation, il est nul de plein droit.</p>
+                    </div>
+                    <div id="article38" class="articleX">
+                        <h3>Article 38</h3>
+                        <p>La nullité des actes accomplis irrégulièrement par le mineur ou son représentant légal est une nullité relative.</p>
+                        <p>Les personnes capables de s'engager ne peuvent opposer l'incapacité du mineur avec qui elles ont contracté.</p>
+                    </div>
+                    <div id="article39" class="articleX">
+                        <h3>Article 39</h3>
+                        <p>Le mineur devenu majeur ou émancipé ne peut plus attaquer l'acte nul ou rescindable qu'il a souscrit, lorsqu'il l'a ratifié après sa majorité ou son émancipation.</p>
+                        <p>La ratification peut être expresse ou tacite.</p>
+                    </div>
+                    <div id="article40" class="articleX">
+                        <h3>Article 40</h3>
+                        <p>L'action en nullité ou en rescision se prescrit par cinq ans, à compter du jour de la majorité ou de l'émancipation.</p>
+                    </div>
+                    <div id="article41" class="articleX">
+                        <h3>Article 41</h3>
+                        <p>Lorsque l'action en nullité ou rescision a été déclarée fondée, le mineur n'est tenu au remboursement de ce qui lui a été payé que s'il est prouvé que ce qu'il a reçu a tourné à son profit.</p>
+                        <p>Dans le cas contraire, il n'est tenu de restituer que ce dont il s'est enrichi.</p>
+                    </div>
+                    <div id="article42" class="articleX">
+                        <h3>Article 42</h3>
+                        <p>Le mineur ne peut être admis à faire un testament qu'à partir de l'âge de seize ans révolus.</p>
+                        <p>Le testament du mineur ne peut porter que sur la moitié des biens dont la loi permet au majeur de disposer.</p>
+                    </div>
+                    <div id="article43" class="articleX">
+                        <h3>Article 43</h3>
+                        <p>Le mineur ne peut être donataire ou légataire universel, ni recevoir à titre universel.</p>
+                        <p>Il ne peut recevoir des libéralités particulières qu'avec l'assistance de son représentant légal.</p>
+                    </div>
+                    <div id="article44" class="articleX">
+                        <h3>Article 44</h3>
+                        <p>Le mineur ne peut être témoin dans les actes de l'état civil.</p>
+                    </div>
+                    <div id="article45" class="articleX">
+                        <h3>Article 45</h3>
+                        <p>Le mineur ne peut être partie à une procédure de divorce ou de séparation de corps.</p>
+                    </div>
+                    <div id="article46" class="articleX">
+                        <h3>Article 46</h3>
+                        <p>Le mineur ne peut être nommé tuteur.</p>
+                    </div>
+                    <div id="article47" class="articleX">
+                        <h3>Article 47</h3>
+                        <p>Le mineur ne peut être élu ou nommé à une fonction publique.</p>
+                    </div>
+                    <div id="article48" class="articleX">
+                        <h3>Article 48</h3>
+                        <p>Le mineur ne peut être commerçant.</p>
+                    </div>
+                    <div id="article49" class="articleX">
+                        <h3>Article 49</h3>
+                        <p>Le mineur ne peut être associé d'une société commerciale.</p>
+                    </div>
+                    <div id="article50" class="articleX">
+                        <h3>Article 50</h3>
+                        <p>Le mineur ne peut être membre d'une coopérative.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 - Code de l'Enfance - Loi relative à la minorité</p>
+        </footer>
+    </div>
+    
+    <!-- Bouton pour afficher le sommaire sur mobile -->
+    <div class="mobile-sommaire-btn" id="mobile-sommaire-btn">
+        <i class="fas fa-bars"></i>
+    </div>
+    
+    <!-- Sommaire pour mobile -->
+    <div class="mobile-sommaire" id="mobile-sommaire">
+        <div class="mobile-sommaire-content">
+            <div class="mobile-sommaire-header">
+                <h2 class="mobile-sommaire-title">Sommaire</h2>
+                <button class="mobile-sommaire-close" id="mobile-sommaire-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul class="sommaire-list">
+                <li class="sommaire-item"><a href="#chapitre1">CHAPITRE 1 : Dispositions générales</a></li>
+                <li class="sommaire-item"><a href="#chapitre2">CHAPITRE 2 : Autorité parentale</a></li>
+                <li class="sommaire-item"><a href="#section1-chapitre2">Section 1 : Généralités</a></li>
+                <li class="sommaire-item"><a href="#section2-chapitre2">Section 2 : Exercice de l'autorité parentale</a></li>
+                <li class="sommaire-item"><a href="#section3-chapitre2">Section 3 : Délégation de l'autorité parentale</a></li>
+                <li class="sommaire-item"><a href="#sous-section1-chapitre2">Sous-section 1 : Délégation volontaire</a></li>
+                <li class="sommaire-item"><a href="#sous-section2-chapitre2">Sous-section 2 : Délégation ordonnée par voie de justice</a></li>
+                <li class="sommaire-item"><a href="#section4-chapitre2">Section 4 : Déchéance de l'autorité parentale</a></li>
+                <li class="sommaire-item"><a href="#sous-section1-section4-chapitre2">Sous-section 1 : Conditions et effets</a></li>
+                <li class="sommaire-item"><a href="#section5-chapitre2">Section 5 : Mesures de protection</a></li>
+                <li class="sommaire-item"><a href="#chapitre3">CHAPITRE 3 : Incapacité du mineur</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Gestion du sommaire mobile
+        const mobileSommaireBtn = document.getElementById('mobile-sommaire-btn');
+        const mobileSommaire = document.getElementById('mobile-sommaire');
+        const mobileSommaireClose = document.getElementById('mobile-sommaire-close');
+
+         // Le sélecteur cible maintenant correctement les liens <a> dans la liste
+        const sommaireLinks = document.querySelectorAll('.sommaire-list a');
+
+        
+        // Gère l'ouverture et la fermeture du sommaire via le bouton flottant
+        mobileSommaireBtn.addEventListener('click', () => {
+            if (mobileSommaire.style.display === 'flex') {
+                closeSommaireMenu();
+                return;
+            }
+            mobileSommaire.style.display = 'flex';
+            setTimeout(() => {
+                mobileSommaire.classList.add('active');
+            }, 10);
+        });
+        
+        mobileSommaireClose.addEventListener('click', () => {
+            mobileSommaire.classList.remove('active');
+            setTimeout(() => {
+                mobileSommaire.style.display = 'none';
+            }, 300);
+        });
+
+        // Gère la fermeture via le bouton 'X'
+        mobileSommaireClose.addEventListener('click', () => {
+            closeSommaireMenu();
+        });
+
+       // Gère la fermeture en cliquant en dehors du contenu du sommaire
+    mobileSommaire.addEventListener('click', (e) => {
+        if (e.target === mobileSommaire) {
+            closeSommaireMenu();
+        }
+    });
+
+    // Gère le clic sur un lien du sommaire
+    sommaireLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Empêche le saut brutal de l'ancre pour un défilement fluide
+            e.preventDefault();
+            
+            // Ferme le menu
+            closeSommaireMenu();
+            
+            // **Action ajoutée : Masque le bouton du sommaire**
+            mobileSommaireBtn.style.display = 'none';
+            
+            // Retarde la navigation pour laisser le temps à l'animation de se terminer
+            const targetId = link.getAttribute('href');
+            setTimeout(() => {
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 350); 
+        });
+    });
+
+    // Fonction réutilisable pour fermer le menu du sommaire
+    function closeSommaireMenu() {
+        mobileSommaire.classList.remove('active');
+        setTimeout(() => {
+            mobileSommaire.style.display = 'none';
+        }, 300);
+    }
+
+    // === NOUVEAU CODE À AJOUTER CI-DESSOUS ===
+
+    // Fait réapparaître le bouton dès que l'utilisateur fait défiler la page
+    window.addEventListener('scroll', () => {
+        // On vérifie si le bouton est actuellement masqué
+        if (mobileSommaireBtn.style.display === 'none') {
+            // On le réaffiche en utilisant 'flex' comme dans le CSS d'origine
+            mobileSommaireBtn.style.display = 'flex';
+        }
+    });
+
+        function disableSelectionAndCopyPaste() {
+    // Désactive la sélection de texte via CSS
+    document.body.style.userSelect = 'none';
+    document.body.style.webkitUserSelect = 'none'; // Pour Safari
+    document.body.style.mozUserSelect = 'none';    // Pour Firefox
+    document.body.style.msUserSelect = 'none';     // Pour Internet Explorer/Edge
+
+    // Bloque le menu contextuel (clic droit)
+    window.addEventListener('contextmenu', e => e.preventDefault());
+
+    // Bloque l'action de copier (ex: Ctrl+C)
+    window.addEventListener('copy', e => e.preventDefault());
+
+    // Bloque l'action de coller (ex: Ctrl+V)
+    window.addEventListener('paste', e => e.preventDefault());
+
+    // Bloque le démarrage de la sélection
+    window.addEventListener('selectstart', e => e.preventDefault());
+}
+
+// Appelle la fonction pour activer les restrictions
+disableSelectionAndCopyPaste();
+
+// Configuration - la même URL
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0Izc8seNgKEXzuPCxRx9QwZENsGUxcw7mzL7ESfM727uWZ0D6LZSThT7O69PeRHvg/exec';
+
+// Fonction de suivi (la même que dans index.html)
+async function trackUserAction(userId, action, document) {
+  const actionData = {
+    action: 'track',
+    userId: userId,
+    userAction: action,
+    document: document,
+    timestamp: new Date().toISOString(),
+    userAgent: navigator.userAgent,
+    language: navigator.language,
+    platform: navigator.platform
+  };
+  
+  try {
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(actionData)
+    });
+    
+    if (response.ok) {
+      console.log('Action trackée avec succès');
+      return true;
+    }
+  } catch (error) {
+    console.error('Erreur lors du tracking:', error);
+    storeActionForRetry(actionData);
+  }
+  
+  return false;
+}
+
+// Au chargement de la page, tracker une consultation
+document.addEventListener('DOMContentLoaded', function() {
+  // Générer un ID utilisateur unique (simplifié)
+  const userId = localStorage.getItem('userId') || 'user-' + Math.random().toString(36).substring(2, 12);
+  localStorage.setItem('userId', userId);
+  
+  // Récupérer le nom du document depuis le titre de la page
+  const documentName = document.title.replace(' - Code de la Famille', '');
+  
+  // Envoyer le suivi de consultation
+  trackUserAction(userId, 'view', documentName);
+});
+
+// Modifier le bouton de téléchargement pour ajouter le suivi
+function downloadDocument() {
+  // Générer un ID utilisateur unique
+  const userId = localStorage.getItem('userId') || 'user-' + Math.random().toString(36).substring(2, 12);
+  localStorage.setItem('userId', userId);
+  
+  // Récupérer le nom du document
+  const documentName = document.title.replace(' - Code de la Famille', '');
+  
+  // Envoyer le suivi de téléchargement
+  trackUserAction(userId, 'download', documentName);
+  
+  // Votre logique de téléchargement existante...
+  alert("Document téléchargé avec succès !");
+}
+    </script>
+
+</body>
+</html>
+
