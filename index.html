@@ -427,8 +427,7 @@
         <span>Document téléchargé avec succès et disponible hors ligne !</span>
     </div>
 
-    <script>
-        // Initialisation
+          // Initialisation
         window.addEventListener('load', () => {
             updateDownloadButtons();
             updateOfflineList();
@@ -518,6 +517,54 @@
         
         window.addEventListener('offline', () => {
             showNotification("Vous êtes maintenant hors ligne. Les documents téléchargés restent accessibles.", true);
+
+<script>
+// Fonction pour charger les stats publiques
+async function loadPublicStats() {
+  try {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbx0Izc8seNgKEXzuPCxRx9QwZENsGUxcw7mzL7ESfM727uWZ0D6LZSThT7O69PeRHvg/exec?action=getStats');
+    
+    if (response.ok) {
+      const data = await response.json();
+      
+      if (data.success) {
+        // Mettre à jour les stats pour chaque document
+        updatePublicStats(data.data);
+      }
+    }
+  } catch (error) {
+    console.error('Erreur chargement stats:', error);
+  }
+}
+
+// Mettre à jour l'affichage des stats
+function updatePublicStats(stats) {
+  // Pour chaque document dans les stats
+  stats.documents.forEach(doc => {
+    const docId = doc.name.toLowerCase().replace(/ /g, '-').replace('loi-relative-à-', '').replace('loi-relative-', '');
+    
+    // Mettre à jour les vues
+    const viewsElement = document.getElementById(`views-${docId}-public`);
+    if (viewsElement) {
+      viewsElement.textContent = `${doc.views} consultations`;
+    }
+    
+    // Mettre à jour les téléchargements
+    const downloadsElement = document.getElementById(`downloads-${docId}-public`);
+    if (downloadsElement) {
+      downloadsElement.textContent = `${doc.downloads} téléchargements`;
+    }
+  });
+}
+
+// Charger les stats au démarrage
+document.addEventListener('DOMContentLoaded', function() {
+  loadPublicStats();
+  
+  // Recharger toutes les 30 secondes
+  setInterval(loadPublicStats, 30000);
+});
+            
         });
     </script>
 </body>
