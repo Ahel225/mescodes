@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultation du document</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #3498db;
+            margin-top: 25px;
+        }
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="back-button" onclick="window.close()">Retour</a>
+    <div id="document-content"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const documentData = JSON.parse(sessionStorage.getItem('currentDocument'));
+            if (documentData) {
+                document.title = documentData.title;
+                document.getElementById('document-content').innerHTML = documentData.content;
+            } else {
+                document.getElementById('document-content').innerHTML = '<p>Document non trouvé.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
