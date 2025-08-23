@@ -87,6 +87,7 @@
             flex-direction: column;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.6);
+            position: relative;
         }
         
         .card:hover {
@@ -136,6 +137,7 @@
         .card-buttons {
             display: flex;
             justify-content: space-between;
+            margin-bottom: 15px;
         }
         
         .card-button {
@@ -210,6 +212,39 @@
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
         
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+        }
+        
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #5a6c7d;
+        }
+        
+        .stat i {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .stat.views i {
+            color: #667eea;
+        }
+        
+        .stat.downloads i {
+            color: #11998e;
+        }
+        
+        .stat-count {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
         .footer {
             margin-top: 60px;
             text-align: center;
@@ -240,6 +275,11 @@
             
             .card-button {
                 margin: 8px 0;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 10px;
             }
         }
         
@@ -322,6 +362,54 @@
             color: #667eea;
             margin-right: 15px;
         }
+        
+        .admin-stats {
+            margin-top: 25px;
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1000px;
+        }
+        
+        .admin-stats h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-stats h3 i {
+            margin-right: 10px;
+            color: #667eea;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-item .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-item .label {
+            color: #5a6c7d;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -343,6 +431,28 @@
                 <p>Aucun document téléchargé pour le moment.</p>
             </div>
         </div>
+        
+        <div class="admin-stats">
+            <h3><i class="fas fa-chart-line"></i> Statistiques globales</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="number" id="total-views">0</div>
+                    <div class="label">Vues totales</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number" id="total-downloads">0</div>
+                    <div class="label">Téléchargements totaux</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number" id="total-documents">5</div>
+                    <div class="label">Documents disponibles</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number" id="most-viewed">0</div>
+                    <div class="label">Document le plus consulté</div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="portfolio">
@@ -354,23 +464,23 @@
                 <h2>Loi relative au mariage</h2>
                 <p>Textes juridiques régissant le mariage, les conditions de formation du lien matrimonial, les droits et obligations des époux, ainsi que les régimes matrimoniaux.</p>
                 <div class="card-buttons">
-                    <a href="document-mariage.html" class="card-button primary"><i class="fas fa-eye"></i> Consulter</a>
+                    <a href="loi_mariage" class="card-button primary" onclick="incrementView('mariage')"><i class="fas fa-eye"></i> Consulter</a>
                     <button class="card-button secondary" onclick="downloadDocument('mariage')" id="btn-mariage"><i class="fas fa-download"></i> Télécharger</button>
                 </div>
+                 <!-- SECTION STATS VISIBLE PAR LES UTILISATEURS -->
+                <div class="stats">
+                <div class="stat views">
+                    <i class="fas fa-eye"></i>
+                    <span class="stat-count" id="views-succession-public">Chargement...</span>
+                </div>
+                <div class="stat downloads">
+                    <i class="fas fa-download"></i>
+                    <span class="stat-count" id="downloads-succession-public">Chargement...</span>
+                </div>
+                
             </div>
-              <!-- SECTION STATS VISIBLE PAR LES UTILISATEURS -->
-            <div class="stats">
-              <div class="stat views">
-                <i class="fas fa-eye"></i>
-                <span class="stat-count" id="views-succession-public">Chargement...</span>
-              </div>
-              <div class="stat downloads">
-                <i class="fas fa-download"></i>
-                <span class="stat-count" id="downloads-succession-public">Chargement...</span>
-              </div>
-            </div>
-          </div>
         </div>
+    </div>
         
         <div class="card card-divorce">
             <div class="card-image">
@@ -380,11 +490,23 @@
                 <h2>Loi relative à la séparation de corps et au divorce</h2>
                 <p>Dispositions légales concernant la dissolution du mariage, les procédures de divorce, la séparation de corps et leurs effets juridiques.</p>
                 <div class="card-buttons">
-                    <a href="document-divorce.html" class="card-button primary"><i class="fas fa-eye"></i> Consulter</a>
+                    <a href="document-divorce.html" class="card-button primary" onclick="incrementView('divorce')"><i class="fas fa-eye"></i> Consulter</a>
                     <button class="card-button secondary" onclick="downloadDocument('divorce')" id="btn-divorce"><i class="fas fa-download"></i> Télécharger</button>
                 </div>
+                 <!-- SECTION STATS VISIBLE PAR LES UTILISATEURS -->
+                <div class="stats">
+                <div class="stat views">
+                    <i class="fas fa-eye"></i>
+                    <span class="stat-count" id="views-succession-public">Chargement...</span>
+                </div>
+                <div class="stat downloads">
+                    <i class="fas fa-download"></i>
+                    <span class="stat-count" id="downloads-succession-public">Chargement...</span>
+                </div>
+                
             </div>
         </div>
+    </div>
         
         <div class="card card-minority">
             <div class="card-image">
@@ -394,23 +516,23 @@
                 <h2>Loi relative à la minorité</h2>
                 <p>Textes définissant le statut du mineur, la protection de l'enfance, l'autorité parentale, l'émancipation et les droits des mineurs.</p>
                 <div class="card-buttons">
-                    <a href="loiminorite.html" class="card-button primary"><i class="fas fa-eye"></i> Consulter</a>
+                    <a href="loiminorite" class="card-button primary" onclick="incrementView('minorite')"><i class="fas fa-eye"></i> Consulter</a>
                     <button class="card-button secondary" onclick="downloadDocument('minorite')" id="btn-minorite"><i class="fas fa-download"></i> Télécharger</button>
                 </div>
+                 <!-- SECTION STATS VISIBLE PAR LES UTILISATEURS -->
+                <div class="stats">
+                <div class="stat views">
+                    <i class="fas fa-eye"></i>
+                    <span class="stat-count" id="views-succession-public">Chargement...</span>
+                </div>
+                <div class="stat downloads">
+                    <i class="fas fa-download"></i>
+                    <span class="stat-count" id="downloads-succession-public">Chargement...</span>
+                </div>
+                
             </div>
-              <!-- SECTION STATS VISIBLE PAR LES UTILISATEURS -->
-    <div class="stats">
-      <div class="stat views">
-        <i class="fas fa-eye"></i>
-        <span class="stat-count" id="views-succession-public">Chargement...</span>
-      </div>
-      <div class="stat downloads">
-        <i class="fas fa-download"></i>
-        <span class="stat-count" id="downloads-succession-public">Chargement...</span>
-      </div>
-    </div>
-  </div>
         </div>
+    </div>
         
         <div class="card card-adoption">
             <div class="card-image">
@@ -420,23 +542,50 @@
                 <h2>Loi relative à l'adoption</h2>
                 <p>Réglementation des conditions et procédures d'adoption, les effets de l'adoption plénière et simple, et les droits des parties concernées.</p>
                 <div class="card-buttons">
-                    <a href="document-adoption.html" class="card-button primary"><i class="fas fa-eye"></i> Consulter</a>
+                    <a href="document-adoption.html" class="card-button primary" onclick="incrementView('adoption')"><i class="fas fa-eye"></i> Consulter</a>
                     <button class="card-button secondary" onclick="downloadDocument('adoption')" id="btn-adoption"><i class="fas fa-download"></i> Télécharger</button>
+                </div>
+                <div class="stats">
+                    <div class="stat views">
+                        <i class="fas fa-eye"></i>
+                        <span class="stat-count" id="views-adoption">0</span>
+                    </div>
+                    <div class="stat downloads">
+                        <i class="fas fa-download"></i>
+                        <span class="stat-count" id="downloads-adoption">0</span>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="card card-succession">
-            <div class="card-image">
-                <i class="fas fa-landmark icon"></i>
-            </div>
+    <div class="card">
+        <div class="card-image">
+            <i class="fas fa-landmark icon"></i>
+        </div>
             <div class="card-content">
                 <h2>Loi relative à la succession</h2>
-                <p>Règles encadrant la dévolution successorale, les testaments, les donations, la réserve héréditaire et le partage des biens.</p>
+                <p>Règles encadrant la dévolution successorale...</p>
+                
                 <div class="card-buttons">
-                    <a href="document-succession.html" class="card-button primary"><i class="fas fa-eye"></i> Consulter</a>
-                    <button class="card-button secondary" onclick="downloadDocument('succession')" id="btn-succession"><i class="fas fa-download"></i> Télécharger</button>
+                <a href="document-succession.html" class="card-button primary">
+                    <i class="fas fa-eye"></i> Consulter
+                </a>
+                <button class="card-button secondary" onclick="downloadDocument('succession')">
+                    <i class="fas fa-download"></i> Télécharger
+                </button>
                 </div>
+                
+                <!-- SECTION STATS VISIBLE PAR LES UTILISATEURS -->
+                <div class="stats">
+                <div class="stat views">
+                    <i class="fas fa-eye"></i>
+                    <span class="stat-count" id="views-succession-public">Chargement...</span>
+                </div>
+                <div class="stat downloads">
+                    <i class="fas fa-download"></i>
+                    <span class="stat-count" id="downloads-succession-public">Chargement...</span>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -451,15 +600,36 @@
         <span>Document téléchargé avec succès et disponible hors ligne !</span>
     </div>
 
-          // Initialisation
+    <script>
+        // Initialisation
         window.addEventListener('load', () => {
             updateDownloadButtons();
             updateOfflineList();
+            loadStats();
+            updateGlobalStats();
             
             if (!navigator.onLine) {
                 showNotification("Vous êtes en mode hors ligne. Les documents téléchargés sont disponibles.", true);
             }
         });
+
+        // Fonction pour incrémenter le compteur de vues
+        function incrementView(type) {
+            const stats = JSON.parse(localStorage.getItem('documentStats') || '{}');
+            
+            if (!stats[type]) {
+                stats[type] = { views: 0, downloads: 0 };
+            }
+            
+            stats[type].views++;
+            localStorage.setItem('documentStats', JSON.stringify(stats));
+            
+            // Mettre à jour l'affichage
+            document.getElementById(`views-${type}`).textContent = stats[type].views;
+            
+            // Mettre à jour les statistiques globales
+            updateGlobalStats();
+        }
 
         // Fonction pour télécharger un document
         function downloadDocument(type) {
@@ -468,12 +638,79 @@
             downloadedDocs[type] = true;
             localStorage.setItem('downloadedDocs', JSON.stringify(downloadedDocs));
             
+            // Mettre à jour les statistiques de téléchargement
+            const stats = JSON.parse(localStorage.getItem('documentStats') || '{}');
+            
+            if (!stats[type]) {
+                stats[type] = { views: 0, downloads: 0 };
+            }
+            
+            stats[type].downloads++;
+            localStorage.setItem('documentStats', JSON.stringify(stats));
+            
             // Mettre à jour l'interface
             updateDownloadButtons();
             updateOfflineList();
+            document.getElementById(`downloads-${type}`).textContent = stats[type].downloads;
+            
+            // Mettre à jour les statistiques globales
+            updateGlobalStats();
             
             // Afficher une notification
             showNotification("Document téléchargé avec succès et disponible hors ligne !");
+        }
+
+        // Charger les statistiques
+        function loadStats() {
+            const stats = JSON.parse(localStorage.getItem('documentStats') || '{}');
+            
+            // Initialiser les compteurs pour chaque type de document
+            const documentTypes = ['mariage', 'divorce', 'minorite', 'adoption', 'succession'];
+            
+            documentTypes.forEach(type => {
+                if (!stats[type]) {
+                    stats[type] = { views: 0, downloads: 0 };
+                }
+                
+                document.getElementById(`views-${type}`).textContent = stats[type].views;
+                document.getElementById(`downloads-${type}`).textContent = stats[type].downloads;
+            });
+            
+            localStorage.setItem('documentStats', JSON.stringify(stats));
+        }
+
+        // Mettre à jour les statistiques globales
+        function updateGlobalStats() {
+            const stats = JSON.parse(localStorage.getItem('documentStats') || '{}');
+            
+            let totalViews = 0;
+            let totalDownloads = 0;
+            let mostViewed = 0;
+            let mostViewedDoc = '';
+            
+            for (const type in stats) {
+                totalViews += stats[type].views;
+                totalDownloads += stats[type].downloads;
+                
+                if (stats[type].views > mostViewed) {
+                    mostViewed = stats[type].views;
+                    mostViewedDoc = type;
+                }
+            }
+            
+            document.getElementById('total-views').textContent = totalViews;
+            document.getElementById('total-downloads').textContent = totalDownloads;
+            
+            // Déterminer le nom du document le plus consulté
+            const docNames = {
+                'mariage': 'Mariage',
+                'divorce': 'Divorce',
+                'minorite': 'Minorité',
+                'adoption': 'Adoption',
+                'succession': 'Succession'
+            };
+            
+            document.getElementById('most-viewed').textContent = mostViewedDoc ? docNames[mostViewedDoc] : 'Aucun';
         }
 
         // Mettre à jour l'apparence des boutons de téléchargement
@@ -541,8 +778,91 @@
         
         window.addEventListener('offline', () => {
             showNotification("Vous êtes maintenant hors ligne. Les documents téléchargés restent accessibles.", true);
+        });
 
-<script>
+       
+// Configuration
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0Izc8seNgKEXzuPCxRx9QwZENsGUxcw7mzL7ESfM727uWZ0D6LZSThT7O69PeRHvg/exec';
+
+// Fonction pour envoyer des données de suivi au serveur
+async function trackUserAction(userId, action, document) {
+  const actionData = {
+    action: 'track',
+    userId: userId,
+    userAction: action,
+    document: document,
+    timestamp: new Date().toISOString(),
+    userAgent: navigator.userAgent,
+    language: navigator.language,
+    platform: navigator.platform
+  };
+  
+  try {
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(actionData)
+    });
+    
+    if (response.ok) {
+      console.log('Action trackée avec succès');
+      return true;
+    }
+  } catch (error) {
+    console.error('Erreur lors du tracking:', error);
+    // En cas d'erreur, on peut stocker localement et réessayer plus tard
+    storeActionForRetry(actionData);
+  }
+  
+  return false;
+}
+
+// Stocker les actions pour une nouvelle tentative plus tard
+function storeActionForRetry(actionData) {
+  const pendingActions = JSON.parse(localStorage.getItem('pendingActions') || '[]');
+  pendingActions.push(actionData);
+  localStorage.setItem('pendingActions', JSON.stringify(pendingActions));
+  
+  // Planifier une tentative de ré-envoi
+  setTimeout(() => {
+    retryPendingActions();
+  }, 60000); // Réessayer après 1 minute
+}
+
+// Réessayer d'envoyer les actions en attente
+async function retryPendingActions() {
+  const pendingActions = JSON.parse(localStorage.getItem('pendingActions') || '[]');
+  const successfulActions = [];
+  
+  for (const action of pendingActions) {
+    const success = await trackUserAction(
+      action.userId, 
+      action.userAction, 
+      action.document
+    );
+    
+    if (success) {
+      successfulActions.push(action);
+    }
+  }
+  
+  // Supprimer les actions qui ont réussi
+  if (successfulActions.length > 0) {
+    const newPendingActions = pendingActions.filter(action => 
+      !successfulActions.includes(action)
+    );
+    
+    localStorage.setItem('pendingActions', JSON.stringify(newPendingActions));
+  }
+}
+
+// Au chargement de la page, réessayer les actions en attente
+document.addEventListener('DOMContentLoaded', function() {
+  retryPendingActions();
+});
+
 // Fonction pour charger les stats publiques
 async function loadPublicStats() {
   try {
@@ -588,8 +908,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Recharger toutes les 30 secondes
   setInterval(loadPublicStats, 30000);
 });
-            
-        });
-    </script>
+
+</script>
 </body>
 </html>
