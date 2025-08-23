@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code de la Famille et de l'Enfant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f9f7ff 0%, #f0e6ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 1000px;
+            padding: 25px;
+            background: linear-gradient(120deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(106, 17, 203, 0.3);
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .offline-info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            max-width: 600px;
+            margin: 15px auto 0;
+            backdrop-filter: blur(5px);
+        }
+        
+        .offline-info i {
+            margin-right: 10px;
+            color: #ffdd59;
+        }
+        
+        .portfolio {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid transparent;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border-color: #6a11cb;
+        }
+        
+        .card-image {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .card:hover .card-image img {
+            transform: scale(1.15);
+        }
+        
+        .card-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .card p {
+            color: #5c6b7e;
+            margin-bottom: 20px;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+        
+        .card-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        
+        .card-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            flex: 1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-button i {
+            margin-right: 8px;
+        }
+        
+        .card-button.primary {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+        }
+        
+        .card-button.primary:hover {
+            box-shadow: 0 6px 12px rgba(255, 126, 95, 0.4);
+        }
+        
+        .card-button.secondary {
+            background: linear-gradient(to right, #42e695, #3bb2b8);
+        }
+        
+        .card-button.secondary:hover {
+            box-shadow: 0 6px 12px rgba(66, 230, 149, 0.4);
+        }
+        
+        .card-button.downloaded {
+            background: linear-gradient(to right, #7f8c8d, #95a5a6);
+        }
+        
+        .card-button:hover {
+            transform: translateY(-3px);
+        }
+        
+        /* Styles spécifiques pour chaque type de carte */
+        .card-marriage {
+            border-top: 5px solid #ff7e5f;
+        }
+        
+        .card-marriage .card-image {
+            background: linear-gradient(45deg, #ff7e5f, #feb47b);
+        }
+        
+        .card-divorce {
+            border-top: 5px solid #7474BF;
+        }
+        
+        .card-divorce .card-image {
+            background: linear-gradient(45deg, #7474BF, #348AC7);
+        }
+        
+        .card-minority {
+            border-top: 5px solid #3CA55C;
+        }
+        
+        .card-minority .card-image {
+            background: linear-gradient(45deg, #3CA55C, #B5AC49);
+        }
+        
+        .card-adoption {
+            border-top: 5px solid #8E44AD;
+        }
+        
+        .card-adoption .card-image {
+            background: linear-gradient(45deg, #8E44AD, #C0392B);
+        }
+        
+        .card-succession {
+            border-top: 5px solid #1A2980;
+        }
+        
+        .card-succession .card-image {
+            background: linear-gradient(45deg, #1A2980, #26D0CE);
+        }
+        
+        .icon {
+            font-size: 3.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+            padding: 20px;
+            width: 100%;
+            max-width: 1000px;
+            background: linear-gradient(120deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .portfolio {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .card-buttons {
+                flex-direction: column;
+            }
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: linear-gradient(to right, #42e695, #3bb2b8);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+        }
+        
+        .notification i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .offline-documents {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ffdd59;
+            backdrop-filter: blur(5px);
+        }
+        
+        .offline-documents h4 {
+            margin-bottom: 10px;
+            color: #ffdd59;
+        }
+        
+        #offline-list ul {
+            list-style: none;
+        }
+        
+        #offline-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        #offline-list li:last-child {
+            border-bottom: none;
+        }
+        
+        #offline-list i {
+            margin-right: 10px;
+            color: #ffdd59;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Code de la Famille et de l'Enfant</h1>
+        <p>Porte-documents des textes juridiques fondamentaux</p>
+        
+        <div class="offline-info">
+            <i class="fas fa-info-circle"></i>
+            <p>Cette application fonctionne hors ligne. Les documents peuvent être téléchargés pour consultation sans connexion Internet.</p>
+        </div>
+        
+        <div class="offline-documents">
+            <h4>Documents disponibles hors ligne :</h4>
+            <div id="offline-list">
+                <p>Aucun document téléchargé pour le moment.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="portfolio">
+        <div class="card card-marriage">
+            <div class="card-image">
+                <i class="fas fa-ring icon"></i>
+            </div>
+            <div class="card-content">
+                <h2>Loi relative au mariage</h2>
+                <p>Textes juridiques régissant le mariage, les conditions de formation du lien matrimonial, les droits et obligations des époux, ainsi que les régimes matrimoniaux.</p>
+                <div class="card-buttons">
+                    <a href="loi_mariage.html" class="card-button primary"><i class="fas fa-eye"></i> Consulter</a>
+                    <button class="card-button secondary" onclick="downloadDocument('mariage')" id="btn-mariage"><i class="fas fa-download"></i> Télécharger</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card card-divorce">
+            <div class="card-image">
+                <i class="fas fa-balance-scale icon"></i>
+            </div>
+            <div class="card-content">
+                <h2>Loi relative à la séparation de corps et au divorce</h2>
+                <p>Dispositions légales concernant la dissolution du mariage, les procédures de divorce, la séparation de corps et leurs effets juridiques.</p>
+                <div class="card-buttons">
+                    <a href="document-divorce.html" class="card-button primary"><i class="fas fa-eye"></i> Consulter</a>
+                    <button class="card-button secondary" onclick="downloadDocument('divorce')" id="btn-divorce"><i class="fas fa-download"></i> Télécharger</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card card-minority">
+            <div class="card-image">
+                <i class="fas fa-child icon"></i>
+            </div>
+            <div class="card-content">
+                <h2>Loi relative à la minorité</h2>
+                <p>Textes définissant le statut du mineur, la protection de l'enfance, l'autorité parentale, l'émancipation et les droits des mineurs.</p>
+                <div class="card-buttons">
+                    <a href="loiminorite.html" class="card-button primary"><i class="fas fa-eye"></i> Consulter</a>
+                    <button class="card-button secondary" onclick="downloadDocument('minorite')" id="btn-minorite"><i class="fas fa-download"></i> Télécharger</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card card-adoption">
+            <div class="card-image">
+                <i class="fas fa-hands-helping icon"></i>
+            </div>
+            <div class="card-content">
+                <h2>Loi relative à l'adoption</h2>
+                <p>Réglementation des conditions et procédures d'adoption, les effets de l'adoption plénière et simple, et les droits des parties concernées.</p>
+                <div class="card-buttons">
+                    <a href="document-adoption.html" class="card-button primary"><i class="fas fa-eye"></i> Consulter</a>
+                    <button class="card-button secondary" onclick="downloadDocument('adoption')" id="btn-adoption"><i class="fas fa-download"></i> Télécharger</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card card-succession">
+            <div class="card-image">
+                <i class="fas fa-landmark icon"></i>
+            </div>
+            <div class="card-content">
+                <h2>Loi relative à la succession</h2>
+                <p>Règles encadrant la dévolution successorale, les testaments, les donations, la réserve héréditaire et le partage des biens.</p>
+                <div class="card-buttons">
+                    <a href="document-succession.html" class="card-button primary"><i class="fas fa-eye"></i> Consulter</a>
+                    <button class="card-button secondary" onclick="downloadDocument('succession')" id="btn-succession"><i class="fas fa-download"></i> Télécharger</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>© 2023 Porte-documents juridiques - Code de la Famille et de l'Enfant</p>
+        <p>Cette application fonctionne hors ligne. Les documents téléchargés sont accessibles sans connexion Internet.</p>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span>Document téléchargé avec succès et disponible hors ligne !</span>
+    </div>
+
+    <script>
+        // Initialisation
+        window.addEventListener('load', () => {
+            updateDownloadButtons();
+            updateOfflineList();
+            
+            if (!navigator.onLine) {
+                showNotification("Vous êtes en mode hors ligne. Les documents téléchargés sont disponibles.", true);
+            }
+        });
+
+        // Fonction pour télécharger un document
+        function downloadDocument(type) {
+            // Enregistrer dans le localStorage que le document est téléchargé
+            const downloadedDocs = JSON.parse(localStorage.getItem('downloadedDocs') || '{}');
+            downloadedDocs[type] = true;
+            localStorage.setItem('downloadedDocs', JSON.stringify(downloadedDocs));
+            
+            // Mettre à jour l'interface
+            updateDownloadButtons();
+            updateOfflineList();
+            
+            // Afficher une notification
+            showNotification("Document téléchargé avec succès et disponible hors ligne !");
+        }
+
+        // Mettre à jour l'apparence des boutons de téléchargement
+        function updateDownloadButtons() {
+            const downloadedDocs = JSON.parse(localStorage.getItem('downloadedDocs') || '{}');
+            
+            for (const type in downloadedDocs) {
+                const button = document.getElementById(`btn-${type}`);
+                if (button) {
+                    button.innerHTML = '<i class="fas fa-check"></i> Téléchargé';
+                    button.classList.remove('secondary');
+                    button.classList.add('downloaded');
+                    button.onclick = null;
+                }
+            }
+        }
+
+        // Mettre à jour la liste des documents hors ligne
+        function updateOfflineList() {
+            const downloadedDocs = JSON.parse(localStorage.getItem('downloadedDocs') || '{}');
+            const types = {
+                'mariage': 'Loi relative au mariage',
+                'divorce': 'Loi relative au divorce',
+                'minorite': 'Loi relative à la minorité',
+                'adoption': 'Loi relative à l\'adoption',
+                'succession': 'Loi relative à la succession'
+            };
+            
+            const offlineList = document.getElementById('offline-list');
+            
+            if (Object.keys(downloadedDocs).length === 0) {
+                offlineList.innerHTML = '<p>Aucun document téléchargé pour le moment.</p>';
+                return;
+            }
+            
+            let html = '<ul>';
+            for (const type in downloadedDocs) {
+                html += `<li><i class="fas fa-file-pdf"></i> ${types[type]}</li>`;
+            }
+            html += '</ul>';
+            
+            offlineList.innerHTML = html;
+        }
+
+        // Afficher une notification
+        function showNotification(message, isWarning = false) {
+            const notification = document.getElementById('notification');
+            
+            if (isWarning) {
+                notification.style.background = 'linear-gradient(to right, #ff5e62, #ff9966)';
+                notification.innerHTML = '<i class="fas fa-exclamation-triangle"></i> <span>' + message + '</span>';
+            } else {
+                notification.style.background = 'linear-gradient(to right, #42e695, #3bb2b8)';
+                notification.innerHTML = '<i class="fas fa-check-circle"></i> <span>' + message + '</span>';
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Gérer le statut de connexion
+        window.addEventListener('online', () => {
+            showNotification("Connexion Internet rétablie.");
+        });
+        
+        window.addEventListener('offline', () => {
+            showNotification("Vous êtes maintenant hors ligne. Les documents téléchargés restent accessibles.", true);
+        });
+    </script>
+</body>
+</html>
