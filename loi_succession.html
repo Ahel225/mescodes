@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code des Successions - Loi relative aux successions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #5d4037; /* Brun profond évoquant le bois ancien */
+            --secondary-color: #d7ccc8; /* Beige clair */
+            --accent-color: #8d6e63; /* Brun moyen */
+            --dark-color: #3e2723; /* Brun très foncé */
+            --light-color: #f5f5f5; /* Blanc cassé */
+            --gold-color: #b8860b; /* Or pour les accents */
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: var(--light-color);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 50L0 25L50 0L100 25L50 50Z' fill='%235d403722' /%3E%3C/svg%3E");
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(61, 39, 35, 0.1);
+            overflow: hidden;
+            border: 1px solid var(--secondary-color);
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #4e342e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid var(--gold-color);
+            position: relative;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold-color), transparent);
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+                #scrollTopBtn, #scrollBottomBtn {
+            position: fixed;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background-color: rgba(26, 60, 120, 0.4);
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 99;
+            display: none;
+            transition: opacity 0.3s;
+        }
+
+        #scrollTopBtn {
+            bottom: 80px;
+        }
+        
+        #scrollBottomBtn {
+            bottom: 20px;
+        }
+        
+        #scrollTopBtn:hover, #scrollBottomBtn:hover {
+            background-color: rgba(93, 64, 55, 1); /* Brun primaire opaque au survol */
+            transform: scale(1.05);
+        }
+         .show-buttons {
+            display: block !important;
+            opacity: 1;
+        }
+        
+        .hide-buttons {
+            opacity: 0;
+            display: none !important;
+        }
+        
+        #scrollTopBtn {
+            bottom: 80px;
+        }
+        
+        #scrollBottomBtn {
+            bottom: 20px;
+        }
+        
+        #scrollTopBtn, #scrollBottomBtn {
+            background-color: rgba(93, 64, 55, 0.8); /* Brun primaire avec transparence */
+            color: var(--light-color);
+            box-shadow: 0 2px 8px rgba(61, 39, 35, 0.3);
+        }
+        .subtitle {
+            font-style: italic;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            scroll-margin-top: 20px;
+        }
+        
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary-color);
+            position: relative;
+        }
+        
+        h2::after {
+            content: "⚰️";
+            position: absolute;
+            right: 0;
+            bottom: 10px;
+        }
+
+                
+        .articleX {
+            background: var(--light-color);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 3px 10px rgba(61, 39, 35, 0.08);
+            scroll-margin-top: 20px;
+            position: relative;
+        }
+        
+        .articleX::before {
+            content: "📜";
+            position: absolute;
+            left: -15px;
+            top: 15px;
+            background: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .article-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .article-title::before {
+            content: "🏛️";
+            margin-right: 10px;
+            color: var(--gold-color);
+        }
+        
+        .article-content {
+            color: #333;
+            line-height: 1.7;
+        }
+
+        /* Bouton sommaire mobile */
+        .mobile-sommaire-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(26, 60, 120, 0.3);
+            z-index: 1001;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid white;
+            box-shadow: 0 4px 15px rgba(93, 64, 55, 0.3);
+        }
+        
+        .mobile-sommaire-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(93, 64, 55, 0.4);
+        }
+        
+        /* Sommaire plein écran pour mobile */
+        .mobile-sommaire {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(93, 64, 55, 0.95); /* Brun primaire avec transparence */
+            z-index: 1002;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .mobile-sommaire.active {
+            opacity: 1;
+        }
+        
+        .mobile-sommaire-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(26, 60, 120, 0.3);
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+            border: 2px solid var(--secondary-color);
+        }
+        
+        .mobile-sommaire.active .mobile-sommaire-content {
+            transform: translateY(0);
+        }
+        
+        .mobile-sommaire-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        .mobile-sommaire-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .mobile-sommaire-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .mobile-sommaire-close:hover {
+            color: var(--primary-color);
+            background-color: var(--secondary-color);
+        }
+        
+        .sommaire-list {
+            list-style: none;
+        }
+        
+        .sommaire-item {
+            margin-bottom: 12px;
+            padding: 15px;
+            border-radius: 8px;
+            transition: var(--transition);
+            background-color: var(--light-color);
+            border-left: 3px solid var(--accent-color);
+        }
+        
+        .sommaire-item:hover {
+            background-color: var(--secondary-color);
+            transform: translateX(5px);
+        }
+        
+        .sommaire-item a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            display: block;
+            transition: var(--transition);
+            font-family: 'Source Serif Pro', serif;
+        }
+        
+        .sommaire-item:hover a {
+            color: var(--primary-color);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--dark-color);
+            font-size: 0.9rem;
+            background: var(--secondary-color);
+            border-top: 1px solid rgba(61, 39, 35, 0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mobile-sommaire-btn {
+                display: flex;
+            }
+            
+            header {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .section, .article {
+                scroll-margin-top: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Code des Successions</h1>
+            <p class="subtitle">Loi n° 2019-573 du 26 juin 2019 relative aux successions</p>
+        </header>
+        
+        <div class="content">
+            <button id="scrollTopBtn" title="Aller en haut">↑</button>
+            <button id="scrollBottomBtn" title="Aller en bas">↓</button>
+            <div class="section">
+                <h2 class="article-title" id="chapitre1">CHAPITRE 1 : De l'ouverture des successions et de la saisine des héritiers</h2>
+                
+                <div id="article1" class="articleX">
+                    <h3>Article 1</h3>
+                    <p>La succession s'ouvre par la mort ou par la déclaration judiciaire de décès en cas d'absence ou de disparition.</p>
+                </div>
+                
+                <div id="article2" class="articleX">
+                    <h3>Article 2</h3>
+                    <p>La succession s'ouvre au jour de la mort.</p>
+                    <p>En cas de disparition ou d'absence, la date d'ouverture est fixée au jour du prononcé du jugement déclaratif de décès.</p>
+                </div>
+                
+                <div id="article3" class="articleX">
+                    <h3>Article 3</h3>
+                    <p>L'ordre de succéder entre les héritiers est réglé par les présentes dispositions. A leur défaut, les biens passent à l'État.</p>
+                </div>
+                
+                <div id="article4" class="articleX">
+                    <h3>Article 4</h3>
+                    <p>Les héritiers sont saisis de plein droit sous l'obligation d'acquitter toutes les charges de la succession.</p>
+                    <p>Les légataires et donataires universels sont saisis dans les conditions prévues par la loi relative aux donations entre vifs et testaments.</p>
+                    <p>L'État doit se faire envoyer en possession.</p>
+                </div>
+                
+                <div id="article5" class="articleX">
+                    <h3>Article 5</h3>
+                    <p>La succession s'ouvre au dernier domicile du défunt pour l'ensemble des biens. Pour les cas où le dernier domicile ne serait pas connu, la succession s'ouvre à la dernière résidence.</p>
+                    <p>Sont portées devant le juge de ce domicile ou de cette résidence les actions en nullité ou en réduction des dispositions du défunt, l'action en partage et l'action en pétition d'hérédité.</p>
+                    <p>Dans le cas de partage d'une même succession entre des cohéritiers étrangers et ivoiriens, ceux-ci prélèvent sur les biens situés en Côte d'Ivoire une portion égale à la valeur des biens situés en pays étranger dont ils seraient exclus, à quelque titre que ce soit, en vertu des lois et coutumes locales.</p>
+                </div>
+                
+                <div id="article6" class="articleX">
+                    <h3>Article 6</h3>
+                    <p>Est nulle et de nul effet toute convention ayant pour objet une succession non encore ouverte qu'il s'agisse de convention sur la succession d'autrui ou de convention sur sa propre succession, sauf dans les cas prévus par la loi.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="article-title" id="chapitre2">CHAPITRE 2 : Des qualités requises pour succéder</h2>
+                
+                <div id="article7" class="articleX">
+                    <h3>Article 7</h3>
+                    <p>Pour succéder, il faut exister à l'instant de la succession.</p>
+                    <p>Sont donc incapables de succéder :</p>
+                    <ol>
+                        <li>celui qui n'est pas encore conçu ;</li>
+                        <li>l'enfant qui n'est pas né vivant.</li>
+                    </ol>
+                </div>
+                
+                <div id="article8" class="articleX">
+                    <h3>Article 8</h3>
+                    <p>Lorsque deux personnes, dont l'une avait vocation à succéder à l'autre, périssent dans un même événement, l'ordre des décès est établi par tous moyens.</p>
+                    <p>Si cet ordre ne peut être déterminé, la succession de chacune d'elles est dévolue sans que l'autre y soit appelée.</p>
+                    <p>Toutefois, si l'un des codécédés laisse des descendants, ceux-ci peuvent représenter leur auteur dans la succession de l'autre lorsque la représentation est admise.</p>
+                </div>
+                
+                <div id="article9" class="articleX">
+                    <h3>Article 9</h3>
+                    <p>Est indigne de succéder, celui qui a été condamné en tant qu'auteur, ou complice, pour avoir volontairement donné ou tenté de donner la mort ou porté des coups mortels au défunt.</p>
+                    <p>Peut être déclaré indigne de succéder :</p>
+                    <ol>
+                        <li>celui qui s'est rendu coupable envers le défunt, de sévices, délits ou injures graves ;</li>
+                        <li>celui qui a gravement porté atteinte à l'honneur, à la considération ou aux intérêts patrimoniaux du défunt ou de sa famille ;</li>
+                        <li>celui qui a commis les faits mentionnés à l'alinéa 1 du présent article et à l'égard de qui l'action publique n'a pu être exercée.</li>
+                    </ol>
+                    <p>L'action en déclaration d'indignité est ouverte à tous les successibles, jusqu'au partage.</p>
+                    <p>Le pardon accordé par le défunt fait cesser l'indignité. La preuve du pardon peut être faite par tous moyens.</p>
+                </div>
+                
+                <div id="article10" class="articleX">
+                    <h3>Article 10</h3>
+                    <p>L'indignité est personnelle. Les descendants de l'indigne succèdent comme si leur auteur était prédécédé.</p>
+                    <p>L'indigne ne peut réclamer sur les biens de cette succession, l'usufruit que la loi accorde aux père et mère sur les biens de leurs enfants, ni en être l'administrateur.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="article-title" id="chapitre3">CHAPITRE 3 : Des ordres de succession entre les héritiers</h2>
+                
+                <div id="article11" class="articleX">
+                    <h3>Article 11</h3>
+                    <p>Les successions sont déférées aux enfants et autres descendants du défunt, à ses ascendants, à ses parents collatéraux et à son conjoint survivant dans l'ordre et suivant les règles ci-après déterminées.</p>
+                </div>
+                
+                <div id="article12" class="articleX">
+                    <h3>Article 12</h3>
+                    <p>La qualité d'héritier est constatée par un jugement rendu par le tribunal du lieu d'ouverture de la succession.</p>
+                </div>
+                
+                <div id="article13" class="articleX">
+                    <h3>Article 13</h3>
+                    <p>La masse successorale ne peut comprendre que des biens et droits appartenant au défunt.</p>
+                </div>
+                
+                <div id="article14" class="articleX">
+                    <h3>Article 14</h3>
+                    <p>Toute succession ou partie de succession échue à des ascendants ou à des collatéraux, se divise en deux parts égales, l'une pour les parents de la ligne paternelle, l'autre pour les parents de la ligne maternelle.</p>
+                    <p>Les parents utérins ou consanguins ne sont pas exclus par les germains mais ils ne prennent part que dans leur ligne. Les germains prennent part dans les deux lignes.</p>
+                    <p>Il ne se fait de dévolution d'une ligne à l'autre que lorsque la loi en a ainsi disposé.</p>
+                </div>
+                
+                <div id="article15" class="articleX">
+                    <h3>Article 15</h3>
+                    <p>Sous réserve de ce qui est dit de la représentation, la division opérée entre les lignes paternelle et maternelle, il ne se fait plus de division entre les diverses branches. La moitié dévolue à chaque ligne appartient à l'héritier ou aux héritiers les plus proches en degré. En cas de concours d'héritiers au même degré dans une ligne, ils partagent par tête et par égales portions.</p>
+                </div>
+                
+                <div id="article16" class="articleX">
+                    <h3>Article 16</h3>
+                    <p>La proximité de parenté s'établit par le nombre de générations ; chaque génération s'appelle un degré.</p>
+                </div>
+                
+                <div id="article17" class="articleX">
+                    <h3>Article 17</h3>
+                    <p>La suite des degrés forme la ligne. On appelle ligne directe la suite des degrés entre personnes qui descendent l'une de l'autre, ligne collatérale la suite des degrés entre personnes qui ne descendent pas les unes des autres mais qui descendent d'un auteur commun.</p>
+                    <p>On distingue la ligne directe en ligne directe descendante et en ligne directe ascendante.</p>
+                    <p>La première est celle qui lie le chef avec ceux qui descendent de lui, la deuxième est celle qui lie une personne avec ceux dont elle descend.</p>
+                </div>
+                
+                <div id="article18" class="articleX">
+                    <h3>Article 18</h3>
+                    <p>En ligne directe, on compte autant de degrés qu'il y a de générations. Ainsi le fils est à l'égard du père au premier degré, le petit-fils au second et réciproquement du père et de l'aïeul à l'égard des fils et petits-fils.</p>
+                </div>
+                
+                <div id="article19" class="articleX">
+                    <h3>Article 19</h3>
+                    <p>En ligne collatérale, les degrés se comptent par les générations, depuis l'un des parents jusque et non compris l'auteur commun et depuis celui-ci jusqu'à l'autre parent.</p>
+                    <p>Ainsi deux frères sont au deuxième degré, l'oncle et le neveu au troisième degré, les cousins germains au quatrième, ainsi de suite.</p>
+                </div>
+                
+                <div id="article20" class="articleX">
+                    <h3>Article 20</h3>
+                    <p>La représentation consiste à faire entrer les représentants dans la place, dans le degré et dans les droits du représenté.</p>
+                    <p>On ne représente pas les personnes vivantes mais seulement celles qui sont mortes. On peut représenter celui à la succession duquel on a renoncé.</p>
+                </div>
+                
+                <div id="article21" class="articleX">
+                    <h3>Article 21</h3>
+                    <p>La représentation a lieu à l'infini dans la ligne directe ascendante.</p>
+                    <p>Elle est admise dans tous les cas, soit que les enfants du défunt concourent avec les descendants d'un enfant prédécédé, soit que tous les enfants du défunt étant morts avant lui, les descendants desdits enfants se trouvent entre eux en degrés égaux ou inégaux.</p>
+                </div>
+                
+                <div id="article22" class="articleX">
+                    <h3>Article 22</h3>
+                    <p>La représentation n'a pas lieu en faveur des ascendants. Le plus proche dans chacune des deux lignes exclut toujours le plus éloigné.</p>
+                </div>
+                
+                <div id="article23" class="articleX">
+                    <h3>Article 23</h3>
+                    <p>En ligne collatérale, la représentation est admise en faveur des enfants et des descendants des frères et sœurs du défunt, soit qu'ils viennent à sa succession concurrentement avec des oncles ou tantes, soit que tous les frères et sœurs du défunt étant prédécédés, la succession se trouve dévolue à leurs descendants en degrés égaux ou inégaux.</p>
+                </div>
+                
+                <div id="article24" class="articleX">
+                    <h3>Article 24</h3>
+                    <p>Dans tous les cas où la représentation est admise, le partage s'opère par souche.</p>
+                    <p>Si une même souche a produit plusieurs branches, la subdivision se fait aussi par souche dans chaque branche et les membres de la même branche partagent entre eux par tête.</p>
+                </div>
+                
+                <div id="article25" class="articleX">
+                    <h3>Article 25</h3>
+                    <p>Est désigné par :</p>
+                    <ol>
+                        <li>souche, l'auteur commun de plusieurs descendants ;</li>
+                        <li>branche, la ligne directe des parents issus d'une même souche.</li>
+                    </ol>
+                </div>
+                
+                <div id="article26" class="articleX">
+                    <h3>Article 26</h3>
+                    <p>Les enfants ou leurs descendants et le conjoint survivant succèdent au défunt. Les trois quarts de la succession sont dévolus aux enfants ou leurs descendants et un quart au conjoint survivant.</p>
+                    <p>A défaut de conjoint survivant, les enfants ou leurs descendants succèdent seuls au défunt.</p>
+                </div>
+                
+                <div id="article27" class="articleX">
+                    <h3>Article 27</h3>
+                    <p>A défaut d'enfants et de descendants d'eux, une moitié de la succession est dévolue aux père et mère du défunt, l'autre moitié au conjoint survivant.</p>
+                    <p>A défaut de conjoint survivant, une moitié de la succession est dévolue aux père et mère, l'autre moitié aux frères et sœurs du défunt.</p>
+                    <p>A défaut de père et mère, une moitié de la succession est dévolue au conjoint survivant, l'autre moitié aux frères et sœurs du défunt.</p>
+                    <p>A défaut de conjoint survivant et de père et mère, la succession est dévolue aux frères et sœurs du défunt.</p>
+                </div>
+                
+                <div id="article28" class="articleX">
+                    <h3>Article 28</h3>
+                    <p>Les enfants ou leurs descendants succèdent à leurs père, mère, aïeuls, aïeules ou autres ascendants, sans distinction de sexe ni de primogéniture et encore qu'ils soient issus de différents mariages ou nés hors mariage.</p>
+                    <p>Ils succèdent par égales portions et par tête, quand ils sont tous au premier degré et appelés de leur chef. Ils succèdent par souche lorsqu'ils viennent tous ou en partie par représentation.</p>
+                </div>
+                
+                <div id="article29" class="articleX">
+                    <h3>Article 29</h3>
+                    <p>Les père et mère partagent entre eux également la portion qui leur est déférée.</p>
+                </div>
+                
+                <div id="article30" class="articleX">
+                    <h3>Article 30</h3>
+                    <p>La portion dévolue aux ascendants se divise par moitié entre les ascendants de la ligne paternelle et les ascendants de la ligne maternelle. L'ascendant qui se trouve au degré le plus proche, recueille la totalité de la portion affectée à sa ligne, à l'exclusion de tous autres.</p>
+                </div>
+            </div>
+
+            <div class="content">
+            <div class="section">
+                <h2 class="article-title">CHAPITRE 3 : Des ordres de succession entre les héritiers</h2>
+                
+                <div id="article31" class="articleX">
+                    <h3>Article 31</h3>
+                    <p>Les ascendants au même degré succèdent par tête et par égales portions.</p>
+                </div>
+                
+                <div id="article32" class="articleX">
+                    <h3>Article 32</h3>
+                    <p>A défaut d'ascendants dans une ligne, la portion qui leur aurait été dévolue se réunit à la part déférée aux ascendants de l'autre ligne.</p>
+                </div>
+                
+                <div id="article33" class="articleX">
+                    <h3>Article 33</h3>
+                    <p>En cas de succession déférée aux frères et sœurs, ils succèdent ou de leur chef ou par représentation.</p>
+                </div>
+                
+                <div id="article34" class="articleX">
+                    <h3>Article 34</h3>
+                    <p>Le partage de la succession ou de la part de succession dévolue aux frères et sœurs s'opère entre eux par égales portions s'ils sont tous du même lit. S'ils sont de lits différents, la division se fait par moitié entre les deux lignes paternelle et maternelle du défunt.</p>
+                    <p>Les germains prennent part dans les deux lignes et les utérins ou consanguins chacun dans leur ligne seulement.</p>
+                    <p>S'il n'y a de frères ou sœurs que d'un côté, ils succèdent à la totalité à l'exclusion de tous autres parents de l'autre ligne.</p>
+                    <p>A défaut de parents au degré successible dans une ligne, la portion qui leur aurait été dévolue se réunit à la part déférée aux parents de l'autre ligne.</p>
+                </div>
+                
+                <div id="article35" class="articleX">
+                    <h3>Article 35</h3>
+                    <p>Les parents collatéraux au-delà du sixième degré ne succèdent pas.</p>
+                </div>
+                
+                <div id="article36" class="articleX">
+                    <h3>Article 36</h3>
+                    <p>Le conjoint survivant succède comme il est dit aux articles 26 et 27 de présente loi.</p>
+                    <p>Seul le conjoint survivant contre lequel il n'existe pas de jugement de séparation de corps passé en force de chose jugée, prend part à la succession.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="article-title">CHAPITRE 4 : Des droits de l'État</h2>
+                
+                <div id="article37" class="articleX">
+                    <h3>Article 37</h3>
+                    <p>L'administration des Domaines qui prétend avoir droit à la succession est tenue de faire apposer les scellés et de faire inventaire, dans les formes prescrites pour l'acceptation des successions sous bénéfice d'inventaire.</p>
+                </div>
+                
+                <div id="article38" class="articleX">
+                    <h3>Article 38</h3>
+                    <p>L'administration des Domaines doit demander l'envoi en possession au tribunal de première instance du lieu d'ouverture de la succession.</p>
+                    <p>Le tribunal statue sur sa demande trois mois après deux publications consécutives faites à dix jours d'intervalle dans un journal d'annonces légales et affichage au tribunal, au bureau de la sous-préfecture ou de la mairie du lieu d'ouverture de la succession, le ministère public entendu.</p>
+                    <p>Lorsque, la vacance ayant été régulièrement déclarée, l'administration des Domaines a été nommée curateur, elle peut, avant de former sa demande, procéder par elle-même aux formalités de publicité prévues à l'alinéa précédent.</p>
+                    <p>Dans tous les cas, il sera justifié de la publicité par la production des journaux dans lesquels elle aura été faite et de l'affichage par un exemplaire du placard signé du directeur des Domaines et revêtu d'un certificat du sous-préfet ou du maire du lieu d'ouverture de la succession.</p>
+                </div>
+                
+                <div id="article39" class="articleX">
+                    <h3>Article 39</h3>
+                    <p>Si l'administration des Domaines ne remplit pas les formalités prescrites, l'État peut être condamné aux dommages et intérêts envers les héritiers, s'il s'en représente.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="article-title">CHAPITRE 5 : De l'acceptation et de la répudiation de la succession</h2>
+                
+                <h3 class="article-title">Section 1 : Des dispositions générales</h3>
+                
+                <div id="article40" class="articleX">
+                    <h3>Article 40</h3>
+                    <p>Toute personne peut accepter ou renoncer à une succession qui lui est échue.</p>
+                </div>
+                
+                <div id="article41" class="articleX">
+                    <h3>Article 41</h3>
+                    <p>Lorsque celui à qui une succession est échue est décédé sans l'avoir répudiée ou sans l'avoir acceptée, expressément ou tacitamente, son héritier peut l'accepter ou la répudier de son chef.</p>
+                    <p>Si les héritiers ne sont pas d'accord pour accepter ou pour répudier la succession, elle est réputée acceptée sous bénéfice d'inventaire.</p>
+                </div>
+                
+                <div id="article42" class="articleX">
+                    <h3>Article 42</h3>
+                    <p>La faculté d'accepter ou de répudier une succession se prescrit par cinq ans à compter de l'ouverture de la succession.</p>
+                    <p>L'héritier qui n'a pris parti dans ce délai, est réputé avoir accepté.</p>
+                    <p>La prescription ne court pas tant que l'héritier a des motifs légitimes d'ignorer la naissance de son droit, notamment l'ouverture de la succession.</p>
+                </div>
+                
+                <div id="article43" class="articleX">
+                    <h3>Article 43</h3>
+                    <p>Pendant le délai de prescription prévu à l'article 42, l'héritier ne peut être contraint à prendre qualité, et il ne peut être obtenu contre lui de condamnation. S'il renonce à la succession, les frais par lui exposés légitimement, sont à la charge de la succession.</p>
+                </div>
+                
+                <div id="article44" class="articleX">
+                    <h3>Article 44</h3>
+                    <p>Après l'expiration des délais ci-dessus, l'héritier, en cas de poursuite dirigée contre lui, peut demander un nouveau délai, que le tribunal saisi de la contestation accorde ou refuse suivant les circonstances.</p>
+                </div>
+                
+                <div id="article45" class="articleX">
+                    <h3>Article 45</h3>
+                    <p>Les frais de poursuite, dans le cas de l'article précédent, sont à la charge de la succession, si l'héritier justifie, ou qu'il n'avait pas eu connaissance du décès ou que les délais ont été insuffisants, soit à raison de la situation des biens, soit à raison des contestations survenues : s'il n'en justifie pas, les frais restent à sa charge personnelle.</p>
+                </div>
+                
+                <h3 class="article-title">Section 2 : De l'acceptation de la succession</h3>
+                
+                <div id="article46" class="articleX">
+                    <h3>Article 46</h3>
+                    <p>Une succession peut être acceptée purement et simplement, ou sous bénéfice d'inventaire.</p>
+                </div>
+                
+                <div id="article47" class="articleX">
+                    <h3>Article 47</h3>
+                    <p>Nul n'est tenu d'accepter une succession qui lui est échue.</p>
+                </div>
+                
+                <div id="article48" class="articleX">
+                    <h3>Article 48</h3>
+                    <p>L'effet de l'acceptation remonte au jour de l'ouverture de la succession.</p>
+                </div>
+                
+                <div id="article49" class="articleX">
+                    <h3>Article 49</h3>
+                    <p>L'acceptation peut être expresse ou tacite. Elle est expresse quand on prend le titre ou la qualité d'héritier dans un acte authentique ou privé. Elle est tacite, quand le successible fait un acte qui suppose nécessairement son intention d'accepter, et qu'il n'aurait droit de faire qu'en sa qualité d'héritier.</p>
+                </div>
+                
+                <div id="article50" class="articleX">
+                    <h3>Article 50</h3>
+                    <p>Les actes purement conservatoires ou de surveillance, et les actes d'administration provisoire, peuvent être accomplis par le successible sans emporter acceptation de la succession, si celui-ci n'y a pas pris la qualité ou le titre d'héritier.</p>
+                    <p>Sont réputés purement conservatoires notamment :</p>
+                    <ol>
+                        <li>le paiement des frais funéraires et de dernières maladies du défunt, des impôts dus par le défunt, des loyers et autres dettes successorales dont le règlement est urgent ;</li>
+                        <li>le recouvrement des fruits et revenus des biens successoraux, à charge de justifier que les fonds ont été employés à éteindre les dettes visées au 1° ou ont été déposés chez un notaire ou consignés ;</li>
+                        <li>l'acte destiné à éviter l'aggravation du passif successoral.</li>
+                    </ol>
+                    <p>Sont réputés être des actes d'administration provisoire, les opérations courantes nécessaires à la continuation à court terme de l'activité de l'entreprise dépendant de la succession.</p>
+                    <p>Sont également réputés pouvoir être accomplis sans emporter acceptation tacite de la succession, le renouvellement, en tant que bailleur ou preneur à bail, les baux qui, à défaut, donneraient lieu au paiement d'une indemnité, ainsi que la mise en oeuvre des décisions d'administration ou de disposition engagées par le défunt et nécessaire au bon fonctionnement de l'entreprise.</p>
+                    <p>Tout autre acte que requiert l'intérêt de la succession et que le successible veut accomplir sans prendre le titre ou la qualité d'héritier doit être autorisé par le juge.</p>
+                    <p>S'il existe dans la succession des objets susceptibles de dépérir ou dispendieux à conserver, l'héritier peut, en sa qualité d'habile à succéder, et sans qu'on puisse en induire de sa part une acceptation, se faire autoriser par justice à procéder à la vente de ces effets.</p>
+                    <p>Cette vente doit être faite par commissaire de Justice, après les affiches et publications réglées par les lois sur la procédure.</p>
+                </div>
+                
+                <div id="article51" class="articleX">
+                    <h3>Article 51</h3>
+                    <p>La donation, vente ou transport que fait de ses droits successifs un des cohéritiers, soit à un tiers, soit à tous ses cohéritiers, soit à quelques-uns d'entre eux, emporte de sa part acceptation de la succession.</p>
+                    <p>Il en est de même :</p>
+                    <ol>
+                        <li>de la renonciation, même gratuite, que fait un des héritiers au profit d'un ou de plusieurs de ses cohéritiers ;</li>
+                        <li>de la renonciation qu'il fait même au profit de tous ses cohéritiers indistinctement, lorsqu'il reçoit le prix de sa renonciation.</p>
+                    </ol>
+                </div>
+                
+                <div id="article52" class="articleX">
+                    <h3>Article 52</h3>
+                    <p>Le majeur ne peut attaquer l'acceptation expresse ou tacite qu'il a faite d'une succession, que dans le cas où cette acceptation aurait été la suite d'un dol pratiqué envers lui.</p>
+                    <p>Il ne peut rétracter son acceptation sous prétexte de lésion, excepté seulement dans le cas où la succession se trouverait absorbée ou diminuée de plus de moitié, par la découverte d'un testament inconnu au moment de l'acceptation.</p>
+                </div>
+                
+                <h3 class="article-title">Section 3 : De la renonciation aux successions</h3>
+                
+                <div id="article53" class="articleX">
+                    <h3>Article 53</h3>
+                    <p>La renonciation à une succession ne se présume pas.</p>
+                    <p>Elle est faite au greffe du tribunal du lieu où la succession est ouverte, sur un registre tenu à cet effet contre remise au déclarant d'une attestation de renonciation.</p>
+                    <p>Le registre peut être consulté par toute personne intéressée.</p>
+                </div>
+                
+                <div id="article54" class="articleX">
+                    <h3>Article 54</h3>
+                    <p>L'héritier qui renonce est censé n'avoir jamais été héritier.</p>
+                </div>
+                
+                <div id="article55" class="articleX">
+                    <h3>Article 55</h3>
+                    <p>La part du renonçant accroît à ses cohéritiers. S'il est seul, elle est dévolue au degré subséquent.</p>
+                </div>
+                
+                <div id="article56" class="articleX">
+                    <h3>Article 56</h3>
+                    <p>L'on ne vient pas par représentation d'un héritier qui a renoncé. Si le renonçant est seul héritier de son degré, ou si tous ses cohéritiers renoncent, les enfants viennent de leur chef et succèdent par tête.</p>
+                </div>
+                
+                <div id="article57" class="articleX">
+                    <h3>Article 57</h3>
+                    <p>Les créanciers de celui qui renonce au préjudice de leurs droits, peuvent se faire autoriser en justice à accepter la succession du chef de leur débiteur, en ses lieu et place.</p>
+                    <p>Dans ce cas, la renonciation n'est annulée qu'en faveur des créanciers, et jusqu'à concurrence seulement de leurs créances. Elle n'est pas au profit de l'héritier qui a renoncé.</p>
+                </div>
+                
+                <div id="article58" class="articleX">
+                    <h3>Article 58</h3>
+                    <p>Tant que la prescription prévue à l'article 42 n'est pas acquise contre lui, l'héritier peut révoquer sa renonciation en acceptant la succession purement et simplement, si elle n'a pas été déjà acceptée par un autre héritier.</p>
+                    <p>Cette acceptation rétroagit au jour de l'ouverture de la succession, sans toutefois remettre en cause les droits qui peuvent être acquis à des tiers sur les biens de la succession, soit par prescription, soit par actes valablement faits avec le curateur à la succession vacante.</p>
+                </div>
+                
+                <div id="article59" class="articleX">
+                    <h3>Article 59</h3>
+                    <p>L'on ne peut renoncer à la succession d'un homme vivant, ni aliéner les droits éventuels qu'on peut avoir à cette succession.</p>
+                </div>
+                
+                <div id="article60" class="articleX">
+                    <h3>Article 60</h3>
+                    <p>Les héritiers qui auraient diverti ou recelé des effets d'une succession, sont déchus de la faculté d'y renoncer. Ils demeurent héritiers purs et simples, nonobstant leur renonciation, sans pouvoir prétendre à aucune part dans les objets divertis ou recelés.</p>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 - Code des Successions - Loi relative aux successions</p>
+        </footer>
+    </div>
+
+    <!-- Bouton pour afficher le sommaire sur mobile -->
+    <div class="mobile-sommaire-btn" id="mobile-sommaire-btn">
+        <i class="fas fa-bars"></i>
+    </div>
+    
+    <!-- Sommaire pour mobile -->
+    <div class="mobile-sommaire" id="mobile-sommaire">
+        <div class="mobile-sommaire-content">
+            <div class="mobile-sommaire-header">
+                <h2 class="mobile-sommaire-title">Sommaire  </h2>
+                <button class="mobile-sommaire-close" id="mobile-sommaire-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul class="sommaire-list">
+                <li class="sommaire-item"><a href="#chapitre1">CHAPITRE 1 : De l'ouverture des successions et de la saisine des héritiers</a></li>
+                <li class="sommaire-item"><a href="#chapitre2">CHAPITRE 2 : Des qualités requises pour succéder</a></li>
+                <li class="sommaire-item"><a href="#chapitre3">CHAPITRE 3 : Des ordres de succession entre les héritiers</a></li>
+            </ul>
+        </div>
+    </div>
+
+      <script>
+
+        function isMobileDevice() {
+            return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+        }
+        
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        const scrollBottomBtn = document.getElementById('scrollBottomBtn');
+        let buttonsVisible = false;
+        let hideTimeout;
+        
+        // Fonction pour afficher les boutons
+        function showButtons() {
+            if (!isMobileDevice()) return;
+            
+            clearTimeout(hideTimeout);
+            scrollTopBtn.classList.remove('hide-buttons');
+            scrollBottomBtn.classList.remove('hide-buttons');
+            scrollTopBtn.classList.add('show-buttons');
+            scrollBottomBtn.classList.add('show-buttons');
+            buttonsVisible = true;
+            
+            // Masquer après 2 secondes d'inactivité
+            hideTimeout = setTimeout(hideButtons, 2000);
+        }
+        
+        // Fonction pour masquer les boutons
+        function hideButtons() {
+            scrollTopBtn.classList.remove('show-buttons');
+            scrollBottomBtn.classList.remove('show-buttons');
+            scrollTopBtn.classList.add('hide-buttons');
+            scrollBottomBtn.classList.add('hide-buttons');
+            buttonsVisible = false;
+        }
+        
+        // Bouton pour aller en haut
+        scrollTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            hideButtons();
+        });
+        
+        // Bouton pour aller en bas
+        scrollBottomBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+            hideButtons();
+        });
+        
+        // Événements tactiles
+        document.addEventListener('touchstart', function() {
+            if (!buttonsVisible) {
+                showButtons();
+            } else {
+                // Réinitialiser le timer de masquage
+                clearTimeout(hideTimeout);
+                hideTimeout = setTimeout(hideButtons, 2000);
+            }
+        });
+        
+        // Pour les écrans non mobiles, afficher toujours le bouton haut quand on scroll
+        window.addEventListener('scroll', function() {
+            if (!isMobileDevice()) {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    scrollTopBtn.style.display = "block";
+                } else {
+                    scrollTopBtn.style.display = "none";
+                }
+            }
+        });
+
+        // Gestion du sommaire mobile
+        const mobileSommaireBtn = document.getElementById('mobile-sommaire-btn');
+        const mobileSommaire = document.getElementById('mobile-sommaire');
+        const mobileSommaireClose = document.getElementById('mobile-sommaire-close');
+
+         // Le sélecteur cible maintenant correctement les liens <a> dans la liste
+        const sommaireLinks = document.querySelectorAll('.sommaire-list a');
+
+        
+        // Gère l'ouverture et la fermeture du sommaire via le bouton flottant
+        mobileSommaireBtn.addEventListener('click', () => {
+            if (mobileSommaire.style.display === 'flex') {
+                closeSommaireMenu();
+                return;
+            }
+            mobileSommaire.style.display = 'flex';
+            setTimeout(() => {
+                mobileSommaire.classList.add('active');
+            }, 10);
+        });
+        
+        mobileSommaireClose.addEventListener('click', () => {
+            mobileSommaire.classList.remove('active');
+            setTimeout(() => {
+                mobileSommaire.style.display = 'none';
+            }, 300);
+        });
+
+        // Gère la fermeture via le bouton 'X'
+        mobileSommaireClose.addEventListener('click', () => {
+            closeSommaireMenu();
+        });
+
+       // Gère la fermeture en cliquant en dehors du contenu du sommaire
+    mobileSommaire.addEventListener('click', (e) => {
+        if (e.target === mobileSommaire) {
+            closeSommaireMenu();
+        }
+    });
+
+    // Gère le clic sur un lien du sommaire
+    sommaireLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Empêche le saut brutal de l'ancre pour un défilement fluide
+            e.preventDefault();
+            
+            // Ferme le menu
+            closeSommaireMenu();
+            
+            // **Action ajoutée : Masque le bouton du sommaire**
+            mobileSommaireBtn.style.display = 'none';
+            
+            // Retarde la navigation pour laisser le temps à l'animation de se terminer
+            const targetId = link.getAttribute('href');
+            setTimeout(() => {
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 350); 
+        });
+    });
+
+    // Fonction réutilisable pour fermer le menu du sommaire
+    function closeSommaireMenu() {
+        mobileSommaire.classList.remove('active');
+        setTimeout(() => {
+            mobileSommaire.style.display = 'none';
+        }, 300);
+    }
+
+    // === NOUVEAU CODE À AJOUTER CI-DESSOUS ===
+
+    // Fait réapparaître le bouton dès que l'utilisateur fait défiler la page
+    window.addEventListener('scroll', () => {
+        // On vérifie si le bouton est actuellement masqué
+        if (mobileSommaireBtn.style.display === 'none') {
+            // On le réaffiche en utilisant 'flex' comme dans le CSS d'origine
+            mobileSommaireBtn.style.display = 'flex';
+        }
+    });
+
+        function disableSelectionAndCopyPaste() {
+    // Désactive la sélection de texte via CSS
+    document.body.style.userSelect = 'none';
+    document.body.style.webkitUserSelect = 'none'; // Pour Safari
+    document.body.style.mozUserSelect = 'none';    // Pour Firefox
+    document.body.style.msUserSelect = 'none';     // Pour Internet Explorer/Edge
+
+    // Bloque le menu contextuel (clic droit)
+    window.addEventListener('contextmenu', e => e.preventDefault());
+
+    // Bloque l'action de copier (ex: Ctrl+C)
+    window.addEventListener('copy', e => e.preventDefault());
+
+    // Bloque l'action de coller (ex: Ctrl+V)
+    window.addEventListener('paste', e => e.preventDefault());
+
+    // Bloque le démarrage de la sélection
+    window.addEventListener('selectstart', e => e.preventDefault());
+}
+
+// Appelle la fonction pour activer les restrictions
+disableSelectionAndCopyPaste();
+
+// Configuration - la même URL
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0Izc8seNgKEXzuPCxRx9QwZENsGUxcw7mzL7ESfM727uWZ0D6LZSThT7O69PeRHvg/exec';
+
+// Fonction de suivi (la même que dans index.html)
+async function trackUserAction(userId, action, document) {
+  const actionData = {
+    action: 'track',
+    userId: userId,
+    userAction: action,
+    document: document,
+    timestamp: new Date().toISOString(),
+    userAgent: navigator.userAgent,
+    language: navigator.language,
+    platform: navigator.platform
+  };
+  
+  try {
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(actionData)
+    });
+    
+    if (response.ok) {
+      console.log('Action trackée avec succès');
+      return true;
+    }
+  } catch (error) {
+    console.error('Erreur lors du tracking:', error);
+    storeActionForRetry(actionData);
+  }
+  
+  return false;
+}
+
+// Au chargement de la page, tracker une consultation
+document.addEventListener('DOMContentLoaded', function() {
+  // Générer un ID utilisateur unique (simplifié)
+  const userId = localStorage.getItem('userId') || 'user-' + Math.random().toString(36).substring(2, 12);
+  localStorage.setItem('userId', userId);
+  
+  // Récupérer le nom du document depuis le titre de la page
+  const documentName = document.title.replace(' - Code de la Famille', '');
+  
+  // Envoyer le suivi de consultation
+  trackUserAction(userId, 'view', documentName);
+});
+
+// Modifier le bouton de téléchargement pour ajouter le suivi
+function downloadDocument() {
+  // Générer un ID utilisateur unique
+  const userId = localStorage.getItem('userId') || 'user-' + Math.random().toString(36).substring(2, 12);
+  localStorage.setItem('userId', userId);
+  
+  // Récupérer le nom du document
+  const documentName = document.title.replace(' - Code de la Famille', '');
+  
+  // Envoyer le suivi de téléchargement
+  trackUserAction(userId, 'download', documentName);
+  
+  // Votre logique de téléchargement existante...
+  alert("Document téléchargé avec succès !");
+}
+    </script>
+</body>
+</html>
