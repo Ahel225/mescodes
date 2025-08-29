@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Textes pénaux — Accès hors ligne</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root { --primary:#1d4d3b; --gold:#c99700; --border:rgba(0,0,0,.12); }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:#f7faf9;color:#1f2937;line-height:1.6}
+.container{max-width:1100px;margin:34px auto;padding:0 16px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+h1{font-size:1.6rem;color:#0f2b22}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:640px){.grid{grid-template-columns:1fr;}}
+.card{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 28px rgba(16,24,40,.06);padding:16px;display:flex;flex-direction:column;gap:10px}
+.card h3{font-size:1.1rem;color:#0f2b22}
+.ref{font-size:.95rem;color:#4b5563}
+.btnbar{display:flex;gap:10px;margin-top:6px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#fff;cursor:pointer;text-decoration:none;color:#0f2b22}
+.btn.primary{background:var(--primary);color:#fff;border:none}
+.viewer{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:3000}
+.viewer .frame{background:#fff;width:min(96vw,1200px);height:min(92vh,820px);border-radius:14px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.viewer header{background:#0f2b22;color:#fff;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.25)}
+.viewer .tools{display:flex;gap:8px;align-items:center}
+.viewer iframe{flex:1;border:0;width:100%}
+.viewer .close{position:absolute;right:10px;top:10px;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:6px 10px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Textes pénaux — accès hors ligne</h1>
+    <div style="font-weight:600;color:#475569">Ouverture intégrée (sans quitter la page)</div>
+  </header>
+
+  <section class="grid">
+    <article class="card">
+      <h3>Code pénal — Partie législative</h3>
+      <div class="ref">Référence : <strong>Nouveau Code pénal 2025</strong> — Partie législative</div>
+      <div class="btnbar">
+        <button class="btn primary" data-open="code_penal_legislatif_v10_clean.html"><i class="fa fa-book-open"></i>Ouvrir</button>
+        <a class="btn" href="code_penal_legislatif_v10_clean.html" download><i class="fa fa-download"></i>Télécharger</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <h3>Code pénal — Partie réglementaire</h3>
+      <div class="ref">Référence : <strong>Nouveau Code pénal 2025</strong> — Partie réglementaire</div>
+      <div class="btnbar">
+        <button class="btn primary" data-open="code_penal_reglementaire_v10_clean.html"><i class="fa fa-book-open"></i>Ouvrir</button>
+        <a class="btn" href="code_penal_reglementaire_v10_clean.html" download><i class="fa fa-download"></i>Télécharger</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <h3>Code de procédure pénale</h3>
+      <div class="ref">Référence : <strong>Loi du 27 décembre 2018</strong> — Code de procédure pénale</div>
+      <div class="btnbar">
+        <button class="btn primary" data-open="code_procedure_penale_corrected_final_v3_toc.html"><i class="fa fa-book-open"></i>Ouvrir</button>
+        <a class="btn" href="code_procedure_penale_corrected_final_v3_toc.html" download><i class="fa fa-download"></i>Télécharger</a>
+      </div>
+    </article>
+  </section>
+</div>
+
+<!-- In-app viewer -->
+<div class="viewer" id="viewer">
+  <div class="frame">
+    <header style="display:flex;align-items:center;gap:10px;">
+      <div class="tools"><strong id="viewTitle">Document</strong></div>
+      <button class="close" id="viewClose">Fermer ✕</button>
+    </header>
+    <iframe id="viewFrame" src="about:blank"></iframe>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('[data-open]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const href = btn.getAttribute('data-open');
+    document.getElementById('viewFrame').src = href;
+    document.getElementById('viewTitle').textContent = btn.closest('.card').querySelector('h3').textContent;
+    document.getElementById('viewer').style.display = 'flex';
+  });
+});
+document.getElementById('viewClose').addEventListener('click', ()=>{
+  document.getElementById('viewer').style.display='none';
+  document.getElementById('viewFrame').src = 'about:blank';
+});
+document.getElementById('viewer').addEventListener('click', (e)=>{
+  if(e.target.id==='viewer'){ document.getElementById('viewClose').click(); }
+});
+</script>
+</body>
+</html>
